@@ -2,12 +2,12 @@ module.exports = function(app, passport) {
 
     // LANDING PAGE
     app.get("/", (req, res) => {
-        res.render("../views/index");
+        res.render("index");
     });
 
     // LOGIN
     app.get("/login", (req, res) => {
-
+        res.render("index");
     });
 
     app.post("/login", passport.authenticate("local"), (req, res) => {
