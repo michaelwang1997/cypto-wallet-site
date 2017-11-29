@@ -1,0 +1,97 @@
+/* ===== GLOBAL ===== */
+
+h1, h2, h3, h4, h5, h6 {
+    text-shadow: 1px 1px 1px #212529;
+}
+
+/* ===== HEADER ===== */
+
+#home {
+    background: url(../assets/header-bg.png) 60% 80% no-repeat;
+    text-align: center;
+    height: 100vh;
+    padding-top: 75px;
+}
+
+#home .btn {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 576px) {
+    #home .display-1 {
+        font-size: 4em !important;
+    }
+}
+
+/* ===== CROWDSALE ===== */
+
+#profile {
+    padding-bottom: 50px;
+    padding-top: 75px;
+    height: 100vh;
+    background: url(../assets/texture.jpg);
+}
+
+/* ===== MARKET ===== */
+
+#market {
+    background: url(../assets/header-bg-yellow.png) 40% 20%;
+    height: 100vh;
+    padding-top: 75px;
+}
+
+/* ===== FOOTER ===== */
+
+#footer {
+    background-color: #212529;
+    color: white;
+    padding: 25px 0 25px 0;
+    height: 100vh;
+}
+
+.platforms h4 {
+    display: inline;
+}
+
+#footer-logo {
+    height: 200px;
+    padding-bottom: 30px;
+}
+
+#footer h3 {
+    padding-bottom: 30px;
+}
+
+.passwordBox{
+    margin-left: 10px;
+}
+
+.signIn{
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.cancel{
+    margin-top: 5px;
+}
+
+.table {
+    background-color: #212121;
+}
+
+th, td {
+    color: #fafafa;
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.navbar-nav .nav-link {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 40px;
+  line-height: 40px;
+}
