@@ -20,8 +20,7 @@
 </head>
 
 <body>
-
-    <!-- ===== NAVIGATION ===== -->
+        <!-- ===== NAVIGATION ===== -->
     <nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-md">
         <div class="container">
             <a class="navbar-brand" id="cryptoFolioNav">CryptoFolio</a>
@@ -51,172 +50,179 @@
             </div>
         </div>
     </nav>
+    <div class="wrapper">
+        <div class="main">
+            <!-- ===== LOGIN MODAL ===== -->
 
-    <!-- ===== LOGIN MODAL ===== -->
-
-    <div id="loginModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Login</h4>
-                    <button type="button" class="close" data-dismiss="modal"> &times;</button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-inline">
-                        <div class="form-group">
-                            <label class="sr-only" for="email">Email</label><input type="text" class="form-control input-sm" placeholder="Email" id="email" name="email">
+            <div id="loginModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Login</h4>
+                            <button type="button" class="close" data-dismiss="modal"> &times;</button>
                         </div>
-                        <div class="form-group">
-                            <label class="sr-only" for="password">Password</label>
-                            <input type="password" class="form-control input-sm passwordBox" placeholder="Password" id="password" name="password"></div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Remember me
-                                </label>
-                            </div>
+                        <div class="modal-body">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label class="sr-only" for="email">Email</label><input type="text" class="form-control input-sm" placeholder="Email" id="email" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="password">Password</label>
+                                    <input type="password" class="form-control input-sm passwordBox" placeholder="Password" id="password" name="password"></div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"> Remember me
+                                        </label>
+                                    </div>
 
-                            <button type="submit" class="btn btn-info btn-xs signIn">Sign in</button>
-                            <button type="button" class="btn btn-default btn-xs cancel" data-dismiss="modal">Cancel</button>
-                        </form>
+                                    <button type="submit" class="btn btn-info btn-xs signIn">Sign in</button>
+                                    <button type="button" class="btn btn-default btn-xs cancel" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- ===== HOME ===== -->
+
+                <section id="home" class="jumbotron-fluid">
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="col-sm-12">
+                                <h1 class="display-1">CryptoFolio</h1>
+                                <h1 class="h3">Your #1 CryptoCurrency Portfolio Manager!</h1>
+                                <p class="lead text-justify">Hello there! Welcome to CryptoFolio!</p>
+                                <p class="lead text-justify"> Thank you for using our application! We guarantee real-time updates on all of the cryptocurrencies you hold. Just enter the amount of coins you own for any currency and we'll take care of the rest!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== PROFILE PAGE ===== -->
+
+                <section id="profile" style="display:none">
+                    <div class="container">
+                        <h1 class="display-3 text-center"><span id="username"></span>'s Profile</h1>
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <h1 class="text-center">Distribution</h1>
+                                <div style="text-align: center;">
+                                    <h5>Wallet Worth: <span id="wallet-value"></span> <span id="currency">USD</span></h5>
+                                </div>
+                                <div id="chart"></div>
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <h1 class="text-center">Wallet</h1>
+                                <ul class="list-group coin-list">
+                                    <button type="button" id="add-coins" class="btn btn-dark add-coin" style="margin: 2px;">
+                                        BUY COINS
+                                    </button>
+                                    <div id="empty" style="text-align: center;">No coins currently.</div>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h1 class="text-center">Coin Statistics</h1>
+                                <div id="statistics"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- ===== MARKET ===== -->
+
+                <section id="market" style="display:none">
+
+                    <h1 class="display-3 text-center">Market</h1>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h1 class="text-center">Top 10 Ranked Cryptocurrencies:</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 centered">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td>Rank</td>
+                                            <td>Name</td>
+                                            <td>Symbol</td>
+                                            <td>Price (USD)</td>
+                                            <td>Market Cap (USD)</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-body">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- ===== CONTACT US ===== -->
+
+                <footer id="footer" style="display:none">
+                    <div class="container">
+
+                        <div class="row align-items-center">
+
+                            <div class="col-sm-6 text-center">
+                                <h1>CryptoFolio</h1>
+                                <h3>Your #1 Cryptocurrency Portfolio Manager!</h3>
+
+                                <small id="copyright">&copy;CryptoFolio 2017</small>
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                <h4>Contact Us</h4>
+                                <form method="POST" action="http://formspree.io/mrshoaibmshaikh@gmail.com">
+
+                                    <div class="form-group">
+                                        <label for="name-input">Name</label>
+                                        <input type="text" name="name" class="form-control" id="name-input" placeholder="Your name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email-input">Email address</label>
+                                        <input type="email" name="_replyto" class="form-control" id="email-input" aria-describedby="emailHelp" placeholder="Your email">
+                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                            else.
+                                        </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="message-input">Message</label>
+                                        <textarea type="text" name="message" class="form-control" id="message-input" placeholder="Your message" rows="2"></textarea>
+                                    </div>
+
+                                    <button type="submit" value="Send" class="btn btn-outline-success">Submit</button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </footer>
         </div>
 
-        <!-- ===== HOME ===== -->
-
-        <section id="home" class="jumbotron-fluid">
-            <div class="container">
-                <div class="row text-center">
-                    <div class="col-sm-12">
-                        <h1 class="display-1">CryptoFolio</h1>
-                        <h1 class="h3">Your #1 CryptoCurrency Portfolio Manager!</h1>
-                        <p class="lead text-justify">Hello there! Welcome to CryptoFolio!</p>
-                        <p class="lead text-justify"> Thank you for using our application! We guarantee real-time updates on all of the cryptocurrencies you hold. Just enter the amount of coins you own for any currency and we'll take care of the rest!
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== PROFILE PAGE ===== -->
-
-        <section id="profile" style="display:none">
-            <div class="container">
-                <h1 class="display-3 text-center"><span id="username"></span>'s Profile</h1>
-                <div class="row">
-
-                    <div class="col-md-4">
-                        <h1 class="text-center">Distribution</h1>
-                        <div style="text-align: center;">
-                            <h5>Wallet Worth: <span id="wallet-value"></span> <span id="currency">USD</span></h5>
-                        </div>
-                        <div id="chart"></div>
-
-                    </div>
-
-                    <div class="col-md-4">
-                        <h1 class="text-center">Wallet</h1>
-                        <ul class="list-group coin-list">
-                            <button type="button" id="add-coins" class="btn btn-dark add-coin" style="margin: 2px;">
-                                BUY COINS
-                            </button>
-                            <div id="empty" style="text-align: center;">No coins currently.</div>
-                        </ul>
-                    </div>
-
-                    <div class="col-md-4">
-                        <h1 class="text-center">Coin Statistics</h1>
-                        <div id="statistics"></div>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
-        <!-- ===== MARKET ===== -->
-
-        <section id="market" style="display:none">
-
-            <h1 class="display-3 text-center">Market</h1>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="text-center">Top 10 Ranked Cryptocurrencies:</h1>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 centered">
-                        <table class="table table-sm table-bordered">
-                            <thead>
-                                <tr>
-                                    <td>Rank</td>
-                                    <td>Name</td>
-                                    <td>Symbol</td>
-                                    <td>Price (USD)</td>
-                                    <td>Market Cap (USD)</td>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- ===== CONTACT US ===== -->
-
-        <footer id="footer" style="display:none">
-            <div class="container">
-
-                <div class="row align-items-center">
-
-                    <div class="col-sm-6 text-center">
-                        <h1>CryptoFolio</h1>
-                        <h3>Your #1 Cryptocurrency Portfolio Manager!</h3>
-
-                        <small id="copyright">&copy;CryptoFolio 2017</small>
-
-                    </div>
-
-                    <div class="col-sm-6">
-                        <h4>Contact Us</h4>
-                        <form method="POST" action="http://formspree.io/mrshoaibmshaikh@gmail.com">
-
-                            <div class="form-group">
-                                <label for="name-input">Name</label>
-                                <input type="text" name="name" class="form-control" id="name-input" placeholder="Your name">
-                            </div>
-                            <div class="form-group">
-                                <label for="email-input">Email address</label>
-                                <input type="email" name="_replyto" class="form-control" id="email-input" aria-describedby="emailHelp" placeholder="Your email">
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                    else.
-                                </small>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-control-label" for="message-input">Message</label>
-                                <textarea type="text" name="message" class="form-control" id="message-input" placeholder="Your message" rows="2"></textarea>
-                            </div>
-
-                            <button type="submit" value="Send" class="btn btn-outline-success">Submit</button>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </footer>
+        <div class="messages">
+            <h3>Messages go here</h3>
+        </div>
+    </div>
 
         <!-- Bootstrap core JavaScript -->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
