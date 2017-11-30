@@ -24,12 +24,16 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+#cryptoFolioNav {
+    color: white;
+}
+
 /* ===== CROWDSALE ===== */
 
 #profile {
     padding-bottom: 50px;
     padding-top: 75px;
-    height: 100vh;
+    /*height: 100vh;*/
     background: url(../assets/texture.jpg);
 }
 
@@ -37,7 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #market {
     background: url(../assets/header-bg-yellow.png) 40% 20%;
-    height: 100vh;
+    /*height: 100vh;*/
     padding-top: 75px;
 }
 
@@ -85,8 +89,8 @@ th, td {
     color: #fafafa;
 }
 
-.btn {
-    cursor: pointer;
+.btn, .nav-link {
+    cursor: pointer !important;
 }
 
 .navbar-nav .nav-link {
