@@ -42,6 +42,7 @@ app.set("view engine", "ejs");
 
 // Import routes.
 require('./routes.js')(app, passport);
+require('./api.js')(app);
 
 
 // Launch server
