@@ -7,28 +7,29 @@ module.exports = function(app, passport) {
 
     // LOGIN
     app.get("/login", (req, res) => {
-        res.render("index");
+        res.render("login");
     });
 
-    app.post("/login", passport.authenticate("local"), (req, res) => {
-        // If this function gets called, authentication was successful.
-        // `req.user` contains the authenticated user.
+    app.post("/login", (req, res) => {
 
-        res.redirect("/users/" + req.user.username);
     });
 
 
     // REGISTER
     app.get("/register", (req, res) => {
-
+        res.render("register");
     });
 
-    app.post("/register", (req, res) => {
-
-    });
+    app.post("/register", passport.authenticate('local-signup', {
+        successRedirect : "/profile", // redirect to the secure profile section
+        failureRedirect : "/register", // redirect back to the signup page if there is an error
+    }));
 
     // LOGOUT
-
+    app.get("/logout", function(req, res) {
+        req.logout();
+        res.redirect("/");
+    });
 
     // PROFILE
 
