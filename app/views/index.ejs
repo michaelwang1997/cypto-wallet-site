@@ -2,59 +2,23 @@
 <html lang="en">
 
 <head>
-
+    <title>CryptoFolio</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>CryptoFolio</title>
-
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+    integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!-- C3 CSS -->
     <link href="c3-0.4.18/c3.css" rel="stylesheet">
-
-    <!-- Custom styles for this website -->
+    <!-- Custom CSS -->
     <link href="css/custom.css" rel="stylesheet">
-
 </head>
 
 <body>
-        <!-- ===== NAVIGATION ===== -->
-    <nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-md">
-        <div class="container">
-            <a class="navbar-brand" id="cryptoFolioNav">CryptoFolio</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" id="homeNav">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="profileNav">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="marketNav">Market</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="footerNav">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#loginModal">
-                            <button type="button" class="btn btn-outline-primary">Log In</button>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#registerModal">
-                            <button type="button" class="btn btn-outline-primary">Register</button>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- ===== NAVIGATION ===== -->
+    <%- include partials/navbar.ejs %>
+
     <div class="wrapper">
         <div class="main">
             <!-- ===== LOGIN MODAL ===== -->
