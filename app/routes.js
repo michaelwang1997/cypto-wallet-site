@@ -10,17 +10,17 @@ module.exports = function(app, passport) {
         res.render("login");
     });
 
-    app.post("/login", (req, res) => {
-
-    });
-
+    app.post("/login", passport.authenticate('login', {
+        successRedirect : "/profile", // redirect to the secure profile section
+        failureRedirect : "/login", // redirect back to the signup page if there is an error
+    }));
 
     // REGISTER
     app.get("/register", (req, res) => {
         res.render("register");
     });
 
-    app.post("/register", passport.authenticate('local-signup', {
+    app.post("/register", passport.authenticate('register', {
         successRedirect : "/profile", // redirect to the secure profile section
         failureRedirect : "/register", // redirect back to the signup page if there is an error
     }));

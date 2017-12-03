@@ -11,7 +11,9 @@ const passport = require("passport");
 
 const dbConfig = require('./config/database.js');
 
-mongoose.connect(dbConfig.url);
+mongoose.connect(dbConfig.url, {
+	useMongoClient: true,
+});
 
 require('./config/passport.js')(passport);
 
@@ -40,9 +42,8 @@ app.use(passport.session());
 
 app.set("view engine", "ejs");
 
-// Import routes.
+// Import routes
 require('./routes.js')(app, passport);
-
 
 // Launch server
 app.listen(PORT, () => {
