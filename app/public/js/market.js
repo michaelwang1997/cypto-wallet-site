@@ -1,9 +1,5 @@
 /* Generate the market table using a call to our API. */
-console.log(window.innerHeight);
-
-document.getElementById("table").style.height = ((window.innerHeight - 100)) + "px"
-
-console.log(document.getElementById("table").style.height)
+document.getElementById("table").style.height = ((window.innerHeight - 100- document.getElementById("tableSearch").offsetHeight)) + "px"
 
 $("#tableSearch").keyup(function myFunction() {
 	// Declare variables
