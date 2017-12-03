@@ -19,7 +19,7 @@ setInterval(function() {
                 // });
 
                 let coin = new Coin();
-                addCoin(coinObject);
+                addCoin(coinObject, null);
             }
         }
     });
@@ -29,7 +29,7 @@ setInterval(function() {
 //120000
 
 // Add a coin to the database.
-let addCoin = function(coinObject) {
+let addCoin = function(coinObject, username) {
 
     Coin.update(
         {"id": coinObject.id},
@@ -46,7 +46,8 @@ let addCoin = function(coinObject) {
             "percent_change_1h": coinObject.percent_change_1h,
             "percent_change_24h": coinObject.percent_change_24h,
             "percent_change_7d": coinObject.percent_change_7d,
-            "last_updated": coinObject.last_updated
+            "last_updated": coinObject.last_updated,
+            "created_by": username
         },
         {"upsert": true},
         function(err,res) {
@@ -55,3 +56,5 @@ let addCoin = function(coinObject) {
         }
     );
 };
+
+module.exports = addCoin;
