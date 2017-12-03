@@ -35,17 +35,14 @@ h1, h2, h3, h4, h5, h6 {
     padding-top: 75px;
     /*height: 100vh;*/
     background: url(../assets/texture.jpg);
-    background-repeat: no-repeat;
 }
 
 /* ===== MARKET ===== */
 
 #market {
     background: url(../assets/header-bg-yellow.png) 40% 20%;
-    background-repeat: no-repeat;
     /*height: 100vh;*/
     padding-top: 75px;
-    padding-bottom: 25px;
 }
 
 /* ===== FOOTER ===== */
@@ -70,17 +67,17 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 30px;
 }
 
-.passwordBox {
+.passwordBox{
     margin-left: 10px;
 }
 
-.signIn {
+.signIn{
     margin-right: 10px;
     margin-left: 10px;
     margin-top: 5px;
 }
 
-.cancel {
+.cancel{
     margin-top: 5px;
 }
 
@@ -115,7 +112,7 @@ th, td {
     color: white;
 }
 
-.modalHeader {
+.modalHeader{
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: start;
@@ -125,10 +122,6 @@ th, td {
     padding: 15px;
     border-top-left-radius: .3rem;
     border-top-right-radius: .3rem;
-}
-
-#table {
-    overflow-y: scroll;
 }
 
 #tableSearch {
@@ -141,6 +134,12 @@ th, td {
     margin-bottom: 12px; /* Add some space below the input */
 }
 
-#table::-webkit-scrollbar {
-    display: none;
+#table {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 1px solid #ddd; /* Add a grey border */
+    font-size: 18px; /* Increase font-size */
+    overflow-y:scroll;
+    height:100px;
+    display:block;
 }
