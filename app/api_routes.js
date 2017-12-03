@@ -4,7 +4,7 @@ let addCoin = require('./update-coin-db');
 module.exports = function(app) {
 
 
-    var messageCount = 1;
+    var messageCount = 2;
     var messages = {
         0: "Test message",
         1: "Another test message"
@@ -12,9 +12,9 @@ module.exports = function(app) {
 
 
     app.post("/api/messages", function(req, res) {
-        var body = req.body;
-        console.log(body);
-        res.contentType("application/json");
+        var message = req.body.data;
+        messages[messageCount] = message;
+        messageCount++;
         res.status(200).send(JSON.stringify("Post request received"));
     });
 
