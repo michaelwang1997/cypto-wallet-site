@@ -2,27 +2,19 @@ module.exports = function(app, passport) {
 
     // LANDING PAGE
     app.get("/", (req, res) => {
-        res.render("index");
+        res.render("index", {user: req.user});
     });
 
     // LOGIN
-    app.get("/login", (req, res) => {
-        res.render("login");
-    });
-
     app.post("/login", passport.authenticate('login', {
-        successRedirect : "/profile", // redirect to the secure profile section
-        failureRedirect : "/login", // redirect back to the signup page if there is an error
+        successRedirect : "/profile",
+        failureRedirect : "/login",
     }));
 
     // REGISTER
-    app.get("/register", (req, res) => {
-        res.render("register");
-    });
-
     app.post("/register", passport.authenticate('register', {
-        successRedirect : "/profile", // redirect to the secure profile section
-        failureRedirect : "/register", // redirect back to the signup page if there is an error
+        successRedirect : "/profile",
+        failureRedirect : "/register",
     }));
 
     // LOGOUT
@@ -32,16 +24,32 @@ module.exports = function(app, passport) {
     });
 
     // PROFILE
+    app.get("/profile", isLoggedIn, function(req, res) {
+        res.render("profile", {user: req.user});
+    });
+
+    // MARKET
+    app.get("/market", isLoggedIn, function(req, res) {
+        res.render("market", {user: req.user});
+    });
+
+    // CONTACT US
+    app.get("/contact", function(req, res) {
+        res.render("contact", {user: req.user});
+    });
+
+    // MARKET
+    app.get("/market", isLoggedIn, function(req, res) {
+        res.render("market", {user: req.user});
+    });
 
     // Authentication middleware.
     function isLoggedIn(req, res, next) {
-
-        // if user is authenticated in the session, carry on
+        // Continue if the user is authenticated.
         if (req.isAuthenticated()) {
             return next();
         }
-
-        // if they aren't redirect them to the home page
+        // Redirect unauthenticated users to the home page.
         res.redirect("/");
     }
 

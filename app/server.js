@@ -37,6 +37,11 @@ app.use(morgan("dev"));
 
 app.use(methodOverride("_method"));
 
+app.use(session({
+    secret: 'team-03-undefined',
+    resave: false,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
