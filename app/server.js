@@ -30,7 +30,32 @@ app.set("view engine", "ejs");
 // Import routes.
 require('./routes.js')(app, passport);
 
+app.post("/api/messages", function(req, res) {
+	res.statusCode = HttpStatus.OK;
+	res.send(messages);
+	messages[messageCount] = req.data;
+	messageCount++;
+	console.log("/n");
+	console.log(req.data);
+	})
+
+app.get("/api/messages", function(req, res) {
+    res.send(messages);
+	})
+
+app.delete("/api/messages/:id", function(req, res) {
+	var messageId = req.param.id;
+	console.log("Message Id is " + messageId);
+	/*messages[req.params.id] = null;
+	console.log(messages);*/
+})
+
 // Launch server
 app.listen(PORT, () => {
     console.log("Server listening on port %d", PORT);
 });
+
+var messageCount = 1;
+var messages = {
+    	0: "Test message"
+    };
