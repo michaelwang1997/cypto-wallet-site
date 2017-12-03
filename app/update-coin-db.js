@@ -2,7 +2,7 @@ const request = require('request');
 var Coin = require('./models/coin.js');
 
 setInterval(function() {
-    request("https://api.coinmarketcap.com/v1/ticker/?limit=10", function(error, response, body) {
+    request("https://api.coinmarketcap.com/v1/ticker/", function(error, response, body) {
         if (error) {
             console.log("Something went wrong: ", error)
         } else {
