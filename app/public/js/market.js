@@ -1,12 +1,9 @@
 /* Generate the market table using a call to our API. */
-var Coin = require('./models/coin.js');
+console.log(window.innerHeight);
 
-(function() {
-	Coin.find({}, function(err, coins) {
-		console.log(coins);
-  });
-})()
+document.getElementById("table").style.height = ((window.innerHeight - 100)) + "px"
 
+console.log(document.getElementById("table").style.height)
 
 // $(function() {
 // 	$.ajax({

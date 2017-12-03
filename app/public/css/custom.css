@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, h6 {
     background: url(../assets/header-bg-yellow.png) 40% 20%;
     /*height: 100vh;*/
     padding-top: 75px;
+    padding-bottom: 25px;
 }
 
 /* ===== FOOTER ===== */
@@ -67,17 +68,17 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 30px;
 }
 
-.passwordBox{
+.passwordBox {
     margin-left: 10px;
 }
 
-.signIn{
+.signIn {
     margin-right: 10px;
     margin-left: 10px;
     margin-top: 5px;
 }
 
-.cancel{
+.cancel {
     margin-top: 5px;
 }
 
@@ -94,10 +95,10 @@ th, td {
 }
 
 .navbar-nav .nav-link {
-  padding-top: 0;
-  padding-bottom: 0;
-  height: 40px;
-  line-height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 40px;
+    line-height: 40px;
 }
 
 .messages {
@@ -112,7 +113,7 @@ th, td {
     color: white;
 }
 
-.modalHeader{
+.modalHeader {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: start;
@@ -122,4 +123,12 @@ th, td {
     padding: 15px;
     border-top-left-radius: .3rem;
     border-top-right-radius: .3rem;
+}
+
+#table {
+    overflow-y: scroll;
+}
+
+#table::-webkit-scrollbar {
+    display: none;
 }
