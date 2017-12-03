@@ -1,36 +1,32 @@
-// const request = require('request');
-// var Crypto = require('../models/crypto.js');
-//
-// function(Market) {
-//     setInterval(function() {
-//         request("https://api.coinmarketcap.com/v1/ticker/?limit=1", function(error, response, body) {
-//             if (error) {
-//                 console.log("Something went wrong: ", error)
-//             } else {
-//                 data = JSON.parse(body);
-//                 for (let index in data) {
-//
-//                     let coin = data[index];
-//                     // // Check if the coin was updated since the last time.
-//                     // wasUpdated(schema, coin).then((isChanged) => {
-//                     //     if (isChanged) {
-//                     //         console.log("Was updated");
-//                     //         updateCoin(schema, coin);
-//                     //     }
-//                     // });
-//
-//                     schema.create({"crypto.id": "bitcoin"}, (err, res) => {
-//                         console.log(err)
-//                         console.log(res)
-//                     });
-//                 }
-//             }
-//         });
-//     }, 5000);
-// };
-//
-// //120000
-//
+const request = require('request');
+var Coin = require('./models/coin.js');
+
+setInterval(function() {
+    request("https://api.coinmarketcap.com/v1/ticker/?limit=1", function(error, response, body) {
+        if (error) {
+            console.log("Something went wrong: ", error)
+        } else {
+            data = JSON.parse(body);
+            for (let index in data) {
+
+                let coin = data[index];
+                // // Check if the coin was updated since the last time.
+                // wasUpdated(schema, coin).then((isChanged) => {
+                //     if (isChanged) {
+                //         console.log("Was updated");
+                //         updateCoin(schema, coin);
+                //     }
+                // });
+
+                Coin.createCoin(coin);
+            }
+        }
+    });
+}, 5000);
+
+
+//120000
+
 // let wasUpdated = function(schema, coinObject) {
 //     console.log(coinObject.id)
 //     console.log(coinObject.last_updated)
