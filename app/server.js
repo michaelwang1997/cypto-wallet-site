@@ -15,8 +15,15 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
 
 
+/*function defaultContentTypeMiddleware (req, res, next) {
+  req.headers['content-type'] = req.headers['content-type'] || 'application/json';
+  next();
+}*/
+
+// app.use(defaultContentTypeMiddleware);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+//app.use(bodyParser());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
@@ -31,12 +38,10 @@ app.set("view engine", "ejs");
 require('./routes.js')(app, passport);
 
 app.post("/api/messages", function(req, res) {
-	res.statusCode = HttpStatus.OK;
-	res.send(messages);
-	messages[messageCount] = req.data;
-	messageCount++;
-	console.log("/n");
-	console.log(req.data);
+	var body = req.body;
+	console.log(body);
+	res.contentType("application/json");
+	res.status(200).send(JSON.stringify(messages));
 	})
 
 app.get("/api/messages", function(req, res) {
