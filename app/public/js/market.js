@@ -23,6 +23,7 @@ $("#tableSearch").keyup(function myFunction() {
 				tr[i].style.display = "";
 			} else {
 				tr[i].style.display = "none";
+				tr[0].style.display = "";
 			}
 		}
 	}
