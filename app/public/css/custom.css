@@ -100,11 +100,6 @@ th, td {
   line-height: 40px;
 }
 
-.main {
-    width: 85%;
-    float: left;
-}
-
 .messages {
     background: #000000;
     width: 15%;

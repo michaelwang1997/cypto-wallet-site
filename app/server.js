@@ -51,7 +51,7 @@ app.set("view engine", "ejs");
 require("./routes.js")(app, passport);
 require("./api.js")(app);
 
-require("./update-market.js");
+require("./update-coin-db.js");
 
 // Launch server
 app.listen(PORT, () => {
