@@ -10,7 +10,7 @@ $("#tableSearch").keyup(function myFunction() {
 	var input, filter, table, tr, td, i;
 	input = document.getElementById("tableSearch");
 	filter = input.value.toUpperCase();
-	table = document.getElementById("table");
+	table = document.getElementById("actualTable");
 	tr = table.getElementsByTagName("tr");
 
 	console.log(filter);
