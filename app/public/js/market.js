@@ -1,11 +1,11 @@
 /* Generate the market table using a call to our API. */
 var Coin = require('./models/coin.js');
 
-function() {
+(function() {
 	Coin.find({}, function(err, coins) {
 		console.log(coins);
   });
-};
+})()
 
 
 // $(function() {

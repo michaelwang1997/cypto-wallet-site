@@ -49,7 +49,7 @@ app.set("view engine", "ejs");
 
 // Import routes
 require("./routes.js")(app, passport);
-require("./api.js")(app);
+require("./api_routes.js")(app);
 
 require("./update-coin-db.js");
 
