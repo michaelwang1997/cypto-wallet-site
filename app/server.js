@@ -9,19 +9,19 @@ const mongoose = require('mongoose');
 const session = require("express-session");
 const passport = require("passport");
 
-const dbConfig = require('./config/database.js');
+const dbConfig = require("./config/database.js");
 
 mongoose.connect(dbConfig.url, {
 	useMongoClient: true,
 });
 
-require('./config/passport.js')(passport);
+require("./config/passport.js")(passport);
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 /*function defaultContentTypeMiddleware (req, res, next) {
   req.headers['content-type'] = req.headers['content-type'] || 'application/json';
@@ -38,7 +38,7 @@ app.use(morgan("dev"));
 app.use(methodOverride("_method"));
 
 app.use(session({
-    secret: 'team-03-undefined',
+    secret: "team-03-undefined",
     resave: false,
     saveUninitialized: true
 }));
@@ -48,8 +48,10 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 // Import routes
-require('./routes.js')(app, passport);
-require('./api.js')(app);
+require("./routes.js")(app, passport);
+require("./api.js")(app);
+
+require("./update-market.js");
 
 // Launch server
 app.listen(PORT, () => {

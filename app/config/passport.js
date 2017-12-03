@@ -1,5 +1,5 @@
-var LocalStrategy   = require('passport-local').Strategy;
-var User            = require('../models/schema.js');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('../models/user.js');
 
 module.exports = function(passport) {
 
@@ -26,7 +26,7 @@ module.exports = function(passport) {
     function(req, username, password, done) {
 
         // Look for a user with the same username.
-        User.findOne({ 'account.username' :  username }, function(err, user) {
+        User.findOne({'username': username}, function(err, user) {
             // Return any errors.
             if (err) {
                 return done(err);
@@ -57,13 +57,10 @@ module.exports = function(passport) {
 
     // Pass the username and password into a callback function.
     function(req, username, password, done) {
-
-        // asynchronous
-        // User.findOne wont fire unless data is sent back
+        // Make the registration request asynchronous.
         process.nextTick(function() {
-
             // Look for a user with the same username.
-            User.findOne({'account.username': username}, function(err, user) {
+            User.findOne({'username': username}, function(err, user) {
                 // Return any errors.
                 if (err) {
                     return done(err);
@@ -77,12 +74,13 @@ module.exports = function(passport) {
                 // No users found; create a new user.
                 var newUser = new User();
                 // Set the new user's account information.
-                newUser.account.username = username;
-                newUser.account.password = newUser.generateHash(password);
+                newUser.username = username;
+                newUser.password = newUser.generateHash(password);
                 // Save the new user.
                 newUser.save(function(err) {
-                    if (err)
-                    throw err;
+                    if (err) {
+                        throw err;
+                    }
                     return done(null, newUser);
                 });
 
