@@ -4,10 +4,8 @@ let addCoin = require('./update-coin-db');
 module.exports = function(app) {
 
 
-    var messageCount = 2;
+    var messageCount = 0;
     var messages = {
-        0: "Test message",
-        1: "Another test message"
     };
 
     app.get("/api/messages/latest", function (req, res) {
