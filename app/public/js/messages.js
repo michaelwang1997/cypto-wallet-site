@@ -15,7 +15,7 @@ function ajaxMessage() {
 			var modalText = document.getElementById("messageSpan");
 			var data = JSON.parse(data);
 			// If the message received is different from current latest
-			if (data.id != newId) {
+			if (data.id != newId && data.message) {
 				newestMessage = data.message;
 				newId = data.id
 				modalText.innerHTML = newestMessage;
