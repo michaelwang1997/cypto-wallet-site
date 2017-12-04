@@ -22,6 +22,8 @@ DELETE /api/messages/1234
 
 ## Custom Cryptocurrency Creation/Edit/Delete API
 
+Requests are done in the same way as above: curl -H "Content-Type: application/json" -XPOST --data '{"data": "your message"}' url-here
+
 We've implemented a RESTful API that adds functionality to CoinMarketCap (the publically facing API that we are using). We've implemented routes that allow the user to create their own cryptocurrencies. The routes are as follows:
 
 GET /api/coin-data
