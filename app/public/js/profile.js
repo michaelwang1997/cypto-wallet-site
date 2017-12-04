@@ -1,7 +1,7 @@
 /* A global state of each cryptocurrency.
  When using React, this will be part of the state. */
 
-let coinStats;
+let wallet;
 let marketStats;
 $.ajax({
     url: "/api/wallet/coin",
@@ -9,7 +9,7 @@ $.ajax({
     contentType: "application/json; charset=utf-8",
     success: function (data) {
         console.log(data);
-        coinStats = data;
+        wallet = data;
     },
     error: function (resp) {
         return alert("Failed to buy the coin.");
@@ -31,27 +31,27 @@ $(function () {
 
 
 let buyCoin = function (coinID, quantity) {
-    if (!coinStats[coinID])
-        coinStats[coinID] = 0
-    coinStats[coinID] += quantity
+    if (!wallet[coinID])
+        wallet[coinID] = 0
+    wallet[coinID] += quantity
     refreshValue()
 }
 
 let sellCoin = function (coinID, quantity) {
-    if (coinStats[coinID] && quantity <= coinStats[coinID])
-        coinStats[coinID] -= quantity
-    if (coinStats[coinID] == 0)
-        delete coinStats[coinID]
+    if (wallet[coinID] && quantity <= wallet[coinID])
+        wallet[coinID] -= quantity
+    if (wallet[coinID] == 0)
+        delete wallet[coinID]
     refreshValue()
 }
 
 let refreshValue = function () {
     var walletValue = 0
 
-    for (let coin in coinStats) {
+    for (let coin in wallet) {
         let id = coin
         let quantity = coins[coin]
-        // let value = coinStats[coin].price_usd
+        // let value = wallet[coin].price_usd
         // walletValue += quantity * value
     }
 
@@ -65,11 +65,11 @@ let refreshValue = function () {
         emptyChart()
     } else {
         $("#empty").empty()
-        generateChart(this)
+        generateChart(wallet, marketStats)
     }
 }
 
-/* Call the API and save all cryptocurrencys in coinStats.
+/* Call the API and save all cryptocurrencys in wallet.
  If user is persistent, update the coin list. */
 
 let getCoinStats = function () {
@@ -78,7 +78,7 @@ let getCoinStats = function () {
         url: 'http://localhost:3000/api/coin-data',
         success: function (data) {
             for (let i in data) {
-                coinStats[data[i].id] = data[i]
+                wallet[data[i].id] = data[i]
             }
             updateCoinList()
         },
@@ -110,12 +110,12 @@ let idToName = function (id) {
 let buyClickListener = function () {
     // Extract the id.
     let coinID = $(this).attr("id").replace("-buy", "")
-    let quantity = user.getQuantity(coinID)
+    let quantity = getQuantity(coinID)
     // Add unique wallet coin button if it doesn't exist.
     if (!quantity) {
         newCoinLayout(coinID, 0).appendTo(".coin-list")
     }
-    user.buyCoin(coinID, 1)
+    buyCoin(coinID, 1)
 
     $.ajax({
         url: "/api/wallet/coin/add",
@@ -130,7 +130,7 @@ let buyClickListener = function () {
         }
     });
     // Update visual quantity.
-    $("." + coinID + "-qty").text(user.getQuantity(coinID))
+    $("." + coinID + "-qty").text(getQuantity(coinID))
 }
 
 /* Click listener for the sell button. */
@@ -138,8 +138,8 @@ let buyClickListener = function () {
 let sellClickListener = function () {
     // Extract the id.
     let coinID = $(this).attr("id").replace("-buy", "")
-    let quantity = user.getQuantity(coinID)
-    user.sellCoin(coinID, 1)
+    let quantity = getQuantity(coinID)
+    sellCoin(coinID, 1)
     // Update visual quantity.
     // $("." + coinID + "-qty").text(user.getQuantity(coinID))
     // // Remove the unique wallet coin button if there's none left.
@@ -168,7 +168,7 @@ let coinInfoListener = function () {
     stats.empty()
     // Extract the id.
     coinID = $(this).attr("id").replace("-btn", "")
-    coin = coinStats[coinID]
+    coin = wallet[coinID]
 
     // Update the "Coin Statistics" section.
     let appendStrongElement = function (key, value) {
@@ -176,7 +176,7 @@ let coinInfoListener = function () {
         stats.append("<br>")
     }
 
-    let totalValue = (coin.price_usd * user.getQuantity(coinID)).toFixed(2)
+    let totalValue = (coin.price_usd * getQuantity(coinID)).toFixed(2)
     appendStrongElement("Your Total Value", totalValue)
     stats.append("<br>")
     // The following is repetitive but each stat is formatted differently.
@@ -220,7 +220,7 @@ let newCoinLayout = function (coinID, quantity) {
     let coinQuantity = $("<span>", {"class": coinID + "-qty"}).append(quantity).appendTo(quantityDiv)
 
     let coinSymbol = $("<span>", {"class": coinID + "-symbol"})
-        .append(" " + coinStats[coinID].symbol)
+        .append(" " + wallet[coinID].symbol)
         .appendTo(quantityDiv)
 
     let buttonDiv = $("<div>").css({"float": "right"}).appendTo(coinLayout)
@@ -237,7 +237,7 @@ let newCoinLayout = function (coinID, quantity) {
 /* Update the coin list with user's current coins. Used for a persistent user. */
 
 let updateCoinList = function () {
-    $.each(user.coins, function (coin, quantity) {
+    $.each(coins, function (coin, quantity) {
         newCoinLayout(coin, quantity).appendTo(".coin-list")
     })
 }
