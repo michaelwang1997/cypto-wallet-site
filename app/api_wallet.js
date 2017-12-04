@@ -75,4 +75,19 @@ module.exports = function(app, passport) {
         });
 
     });
+
+    app.get("/api/wallet/coin", apiUtil.isLoggedIn, (req, res) => {
+        User.findOne({username: req.user.username}, (err, user) => {
+            if(err) {
+                return res.sendStatus(500);
+            }
+
+            if(!user) {
+                return res.sendStatus(400);
+            }
+
+            res.status(200).send(JSON.stringify(user.wallet));
+        });
+
+    });
 };

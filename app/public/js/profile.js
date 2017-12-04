@@ -1,5 +1,5 @@
 /* A global state of each cryptocurrency.
-   When using React, this will be part of the state. */
+ When using React, this will be part of the state. */
 
 let coinStats = {}
 
@@ -69,21 +69,21 @@ class User {
 }
 
 /* Call the API and save all cryptocurrencys in coinStats.
-   If user is persistent, update the coin list. */
+ If user is persistent, update the coin list. */
 
-let getCoinStats = function() {
+let getCoinStats = function () {
     $.ajax({
         type: "GET",
         url: 'https://api.coinmarketcap.com/v1/ticker/',
-        success: function(data) {
+        success: function (data) {
             for (let i in data) {
                 coinStats[data[i].id] = data[i]
             }
             updateCoinList()
         },
         statusCode: {
-            404: function() {
-                alert( "Coin not found" )
+            404: function () {
+                alert("Coin not found")
             }
         }
     })
@@ -100,7 +100,7 @@ $("#wallet-value").text(user.walletValue)
 
 /* Convert "-" delimited id into a readable name. */
 
-let idToName = function(id) {
+let idToName = function (id) {
     words = id.split("-");
     name = "";
     for (let i in words) {
@@ -111,7 +111,7 @@ let idToName = function(id) {
 
 /* Click listener for the add button. */
 
-let buyClickListener = function() {
+let buyClickListener = function () {
     // Extract the id.
     let coinID = $(this).attr("id").replace("-buy", "")
     let quantity = user.getQuantity(coinID)
@@ -126,10 +126,10 @@ let buyClickListener = function() {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({"coinID": coinID}),
-        success: function(resp) {
+        success: function (resp) {
             return alert("Successfully purchased the coin.");
         },
-        error: function(resp) {
+        error: function (resp) {
             return alert("Failed to buy the coin.");
         }
     });
@@ -139,7 +139,7 @@ let buyClickListener = function() {
 
 /* Click listener for the sell button. */
 
-let sellClickListener = function() {
+let sellClickListener = function () {
     // Extract the id.
     let coinID = $(this).attr("id").replace("-buy", "")
     let quantity = user.getQuantity(coinID)
@@ -151,16 +151,15 @@ let sellClickListener = function() {
     //     $("#" + coinID + "-btn").remove()
     //     $("#statistics").empty()
     // }
-
     $.ajax({
         url: "/api/wallet/coin/decrement",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({"coinID": coinID}),
-        success: function(resp) {
+        success: function (resp) {
             return alert("Successfully purchased the coin.");
         },
-        error: function(resp) {
+        error: function (resp) {
             return alert("Failed to buy the coin.");
         }
     });
@@ -168,7 +167,7 @@ let sellClickListener = function() {
 
 /* Click listener for a cryptocurrency wallet button. It updates "Coin Statistics".*/
 
-let coinInfoListener = function() {
+let coinInfoListener = function () {
     stats = $("#statistics")
     stats.empty()
     // Extract the id.
@@ -176,7 +175,7 @@ let coinInfoListener = function() {
     coin = coinStats[coinID]
 
     // Update the "Coin Statistics" section.
-    let appendStrongElement = function(key, value) {
+    let appendStrongElement = function (key, value) {
         $("<strong>").append(key + ": ").appendTo(stats).after(value)
         stats.append("<br>")
     }
@@ -199,36 +198,51 @@ let coinInfoListener = function() {
 
 /* Construct a coin layout (used to display coin statistics). */
 
-let newCoinLayout = function(coinID, quantity) {
+let newCoinLayout = function (coinID, quantity) {
     // Get coin name for the button.
+    $.ajax({
+        url: "/api/wallet/coin",
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"coinID": coinID}),
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (resp) {
+            return alert("Failed to buy the coin.");
+        }
+    });
+
+
+
     coinName = idToName(coinID)
     // Build the unique wallet coin button.
-    let coinLayout = $('<button>', { "id": coinID + "-btn", 'type': 'button', 'class': 'list-group-item btn text-left' })
-                        .css({ "margin": "2px" })
+    let coinLayout = $('<button>', {"id": coinID + "-btn", 'type': 'button', 'class': 'list-group-item btn text-left'})
+        .css({"margin": "2px"})
 
-            let coinNameDiv = $("<div>").append(coinName).css({ "float": "left" }).appendTo(coinLayout)
-            let quantityDiv = $("<div>").appendTo(coinNameDiv)
-            let coinQuantity = $("<span>", { "class": coinID + "-qty"}).append(quantity).appendTo(quantityDiv)
+    let coinNameDiv = $("<div>").append(coinName).css({"float": "left"}).appendTo(coinLayout)
+    let quantityDiv = $("<div>").appendTo(coinNameDiv)
+    let coinQuantity = $("<span>", {"class": coinID + "-qty"}).append(quantity).appendTo(quantityDiv)
 
-            let coinSymbol = $("<span>", { "class": coinID + "-symbol"})
-                                .append(" " + coinStats[coinID].symbol)
-                                .appendTo(quantityDiv)
+    let coinSymbol = $("<span>", {"class": coinID + "-symbol"})
+        .append(" " + coinStats[coinID].symbol)
+        .appendTo(quantityDiv)
 
-            let buttonDiv = $("<div>").css({ "float": "right" }).appendTo(coinLayout)
-            let buyButton = newBuyButton(coinID).appendTo(buttonDiv)
-            let sellButton = newSellButton(coinID).appendTo(buttonDiv)
+    let buttonDiv = $("<div>").css({"float": "right"}).appendTo(coinLayout)
+    let buyButton = newBuyButton(coinID).appendTo(buttonDiv)
+    let sellButton = newSellButton(coinID).appendTo(buttonDiv)
 
-            // Add click listeners to all of the buttons.
-            buyButton.click(buyClickListener)
-            sellButton.click(sellClickListener)
+    // Add click listeners to all of the buttons.
+    buyButton.click(buyClickListener)
+    sellButton.click(sellClickListener)
 
-            return coinLayout.click(coinInfoListener)
+    return coinLayout.click(coinInfoListener)
 }
 
 /* Update the coin list with user's current coins. Used for a persistent user. */
 
-let updateCoinList = function() {
-    $.each(user.coins, function(coin, quantity) {
+let updateCoinList = function () {
+    $.each(user.coins, function (coin, quantity) {
         newCoinLayout(coin, quantity).appendTo(".coin-list")
     })
 }
