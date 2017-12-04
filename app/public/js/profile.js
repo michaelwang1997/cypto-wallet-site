@@ -135,12 +135,12 @@ let sellClickListener = function () {
     let quantity = wallet[coinID]
     sellCoin(coinID, 1)
     // Update visual quantity.
-    // $("." + coinID + "-qty").text(user.getQuantity(coinID))
-    // // Remove the unique wallet coin button if there's none left.
-    // if (!quantity) {
-    //     $("#" + coinID + "-btn").remove()
-    //     $("#statistics").empty()
-    // }
+    $("." + coinID + "-qty").text(wallet[coinID])
+    // Remove the unique wallet coin button if there's none left.
+    if (!quantity) {
+        $("#" + coinID + "-btn").remove()
+        $("#statistics").empty()
+    }
     $.ajax({
         url: "/api/wallet/decrement",
         type: "POST",
@@ -162,7 +162,7 @@ let coinInfoListener = function () {
     stats.empty()
     // Extract the id.
     coinID = $(this).attr("id").replace("-btn", "")
-    coin = wallet[coinID]
+    coin = marketStats[coinID]
 
     // Update the "Coin Statistics" section.
     let appendStrongElement = function (key, value) {
