@@ -2,32 +2,39 @@
  When using React, this will be part of the state. */
 
 let wallet;
-let marketStats;
+let marketStats = {};
 $.ajax({
     url: "/api/wallet/coin",
     type: "GET",
     contentType: "application/json; charset=utf-8",
     success: function (data) {
-        console.log(data);
-        wallet = data;
+        wallet = jQuery.parseJSON(data)
+        console.log(wallet)
     },
     error: function (resp) {
         return alert("Failed to buy the coin.");
     }
 });
 
-$(function () {
+let getCoinStats = function () {
     $.ajax({
-        type: 'GET',
-        url: 'http://localhost:3000/api/coin-data', // limit to 10 for now
+        type: "GET",
+        url: 'http://localhost:3000/api/coin-data',
         success: function (data) {
-            marketStats = data;
+            for (let i in data) {
+                marketStats[data[i].id] = data[i]
+            }
+            updateCoinList()
         },
-        error: function (xhr, error) {
-            console.log("Something went wrong: ", error)
+        statusCode: {
+            404: function () {
+                alert("Coin not found")
+            }
         }
     })
-})
+}
+
+getCoinStats();
 
 
 let buyCoin = function (coinID, quantity) {
@@ -51,8 +58,8 @@ let refreshValue = function () {
     for (let coin in wallet) {
         let id = coin
         let quantity = coins[coin]
-        // let value = wallet[coin].price_usd
-        // walletValue += quantity * value
+        let value = wallet[coin].price_usd
+        walletValue += quantity * value
     }
 
     walletValue = walletValue.toFixed(2)
@@ -72,27 +79,9 @@ let refreshValue = function () {
 /* Call the API and save all cryptocurrencys in wallet.
  If user is persistent, update the coin list. */
 
-let getCoinStats = function () {
-    $.ajax({
-        type: "GET",
-        url: 'http://localhost:3000/api/coin-data',
-        success: function (data) {
-            for (let i in data) {
-                wallet[data[i].id] = data[i]
-            }
-            updateCoinList()
-        },
-        statusCode: {
-            404: function () {
-                alert("Coin not found")
-            }
-        }
-    })
-}
+
 
 /* Set up the session. */
-
-getCoinStats()
 
 /* Convert "-" delimited id into a readable name. */
 
@@ -237,7 +226,7 @@ let newCoinLayout = function (coinID, quantity) {
 /* Update the coin list with user's current coins. Used for a persistent user. */
 
 let updateCoinList = function () {
-    $.each(coins, function (coin, quantity) {
+    $.each(wallet, function (coin, quantity) {
         newCoinLayout(coin, quantity).appendTo(".coin-list")
     })
 }
