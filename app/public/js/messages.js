@@ -12,9 +12,12 @@ function ajaxMessage() {
 			if (data != newestMessage) {
 				newestMessage = data;
 				console.log("New latest message: " + newestMessage);
-				modalText.innerHtml = newestMessage;
-			} 
-
+				modalText.innerHTML = newestMessage;
+                $("#messageModal").fadeIn(1000);
+			}
+			else{
+                $("#messageModal").fadeOut(1000);
+		}
 		},
 		error: function(xhr, error) {
 			console.log("Something went wrong: ", error);
@@ -22,5 +25,12 @@ function ajaxMessage() {
 	})
 };
 	
-setInterval(ajaxMessage, 1000);
+setInterval(ajaxMessage, 3000);
 
+function wait(ms){
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + ms) {
+        end = new Date().getTime();
+    }
+}
