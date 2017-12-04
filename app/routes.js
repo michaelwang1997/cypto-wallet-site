@@ -10,7 +10,7 @@ module.exports = function(app, passport) {
     // LOGIN
     app.post("/login", passport.authenticate('login', {
         successRedirect : "/profile",
-        failureRedirect : "/login",
+        failureRedirect : "/",
     }));
 
     // REGISTER
