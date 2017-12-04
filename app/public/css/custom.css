@@ -33,9 +33,13 @@ h1, h2, h3, h4, h5, h6 {
 #profile {
     padding-bottom: 50px;
     padding-top: 75px;
-    /*height: 100vh;*/
-    background: url(../assets/texture.jpg);
-    background-repeat: no-repeat;
+    height: 100vh;
+    background: url(../assets/header-bg.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-size: 100% 100%;
 }
 
 /* ===== MARKET ===== */

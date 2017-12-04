@@ -20,6 +20,9 @@ Currently, users can only increment or decrement their cryptocurrency quantities
 
 If a user wants to buy a new currency, they can click "BUY COINS" or visit the market directly. Users can search for currencies using the search bar. Here they will be able to add coins to their wallet. 
 
-So at the moment, the user can increment quantities from their wallet and from the market. They can also decrement quantifies, but solely from their wallet. Changes in quantities are accurately represented in the wallet's worth and the pie chart. Both the market and the profile make calls to our API.
+So at the moment, the user can increment quantities from their wallet and from the market. They can also decrement quantities, but solely from their wallet. Changes in quantities are accurately represented in the wallet's worth and the pie chart. Both the market and the profile make calls to our API.
+
+## API
+The RESTful API we implemented has routes in api_routes.js for the basic operations we have implemented.
 
 **Note:** Our application works best in Chrome.
