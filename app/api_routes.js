@@ -19,10 +19,15 @@ module.exports = function(app) {
     app.post("/api/messages", function(req, res) {
         var message = req.body.data;
         console.log(req.body);
-        messages[messageCount] = message;
-        console.log(messages);
-        messageCount++;
-        res.status(200).send(JSON.stringify("Post request received"));
+        if (message) {
+            messages[messageCount] = message;
+            console.log(messages);
+            messageCount++;
+            res.status(200).send(JSON.stringify("Post request received"));    
+        } else {
+            res.status(400).send("Something went wrong");
+        }
+        
     });
 
     app.get("/api/messages", function(req, res) {
