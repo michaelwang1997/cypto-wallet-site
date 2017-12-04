@@ -25,11 +25,11 @@ module.exports = function(app) {
             messages[messageCount] = message;
             console.log(messages);
             messageCount++;
-            res.status(200).send(JSON.stringify("Post request received"));    
+            res.status(200).send(JSON.stringify("Post request received"));
         } else {
             res.status(400).send("Something went wrong");
         }
-        
+
     });
 
     app.get("/api/messages", function(req, res) {
@@ -51,13 +51,15 @@ module.exports = function(app) {
         }
     });
 
+    // Get information for all cryptocurrencies.
     app.get("/api/coin-data", function(req, res) {
         Coin.find({}, {_id: false, __v: false}, function(err, coins) {
             if (err) {
-                res.send(err);
+                // Server error.
+                return res.sendStatus(500);
             }
             else {
-                res.send(coins);
+                res.status(200).send(coins);
             }
         })
     });
@@ -65,15 +67,16 @@ module.exports = function(app) {
     app.get("/api/coin-data/:id", function(req, res) {
         Coin.find({"id": req.params.id}, {_id: false, __v: false}, function(err, coin) {
             if (err) {
-                res.send(err);
+                // Server error.
+                return res.sendStatus(500);
             }
 
             else if (coin.length == 0) {
-                res.status(404).send("Coin not found");
+                return res.sendStatus(400);
             }
 
             else {
-                res.send(coin);
+                res.status(200).send(coin);
             }
         })
     });
