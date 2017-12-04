@@ -121,7 +121,7 @@ let updateCoinList = function () {
 let getCoinStats = function () {
     $.ajax({
         type: "GET",
-        url: 'http://localhost:3000/api/coin-data',
+        url: '/api/coin-data',
         success: function (data) {
             for (let i in data) {
                 marketStats[data[i].id] = data[i]
