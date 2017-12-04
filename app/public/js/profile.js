@@ -20,6 +20,8 @@ class User {
             this.coins[coinID] = 0
         this.coins[coinID] += quantity
         this.refreshValue()
+
+
     }
 
     /* Remove or decrement coin in this.coins */
@@ -118,6 +120,19 @@ let buyClickListener = function() {
         newCoinLayout(coinID, 0).appendTo(".coin-list")
     }
     user.buyCoin(coinID, 1)
+
+    $.ajax({
+        url: "/api/wallet/coin/add",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"coinID": coinID}),
+        success: function(resp) {
+            return alert("Successfully purchased the coin.");
+        },
+        error: function(resp) {
+            return alert("Failed to buy the coin.");
+        }
+    });
     // Update visual quantity.
     $("." + coinID + "-qty").text(user.getQuantity(coinID))
 }

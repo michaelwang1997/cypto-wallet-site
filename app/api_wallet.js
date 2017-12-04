@@ -1,0 +1,39 @@
+const apiUtil = require('./api_util');
+const User = require('./models/user');
+
+module.exports = function(app, passport) {
+    app.post("/api/wallet/coin/add", apiUtil.isLoggedIn, (req, res) => {
+        if(!req.body.coinID) {
+            return res.sendStatus(400);
+        }
+
+        User.findOne({username: req.user.username}, (err, user) => {
+            if(err) {
+                return res.sendStatus(500);
+            }
+
+            if(!user) {
+                return res.sendStatus(400);
+            }
+
+            if(!user.wallet) {
+                user.wallet = {};
+            }
+            if(user.wallet[req.body.coinID]) {
+                user.wallet[req.body.coinID] += 1;
+            } else {
+                user.wallet[req.body.coinID] = 1;
+            }
+
+            User.findOneAndUpdate({username: req.user.username}, {$set: {wallet: user.wallet}}, {new: true}, (err, newUser) => {
+                if(err) {
+                    return res.sendStatus(500);
+                }
+
+                console.log(newUser);
+                return res.sendStatus(200);
+            });
+        });
+
+    });
+};

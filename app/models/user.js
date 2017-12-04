@@ -11,8 +11,7 @@ var userSchema = mongoose.Schema({
     password: String,
 
     wallet: {
-        cryptoID: String,
-        quantity: Number
+
     }
 
 });
