@@ -47,10 +47,10 @@ module.exports = function(app) {
             res.status(200).send("Deleted message with id " + id);
 
             /*while (!messages[messageCount - 1] && messageCount > 0) {
-                messageCount--;
-            }*/
+            messageCount--;
+        }*/
         } else {
-            res.status(400).send("That message id does not exist")
+        res.status(400).send("That message id does not exist")
         }
     });
 
@@ -89,10 +89,11 @@ module.exports = function(app) {
     // Create a new cryptocurrency.
     app.post("/api/coin-data", function(req, res) {
         // Ensure user posted with correct inputs.
-        if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price_usd ||
-        !req.body.market_cap_usd || !req.body.secret) {
+        if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price || !req.body.market_cap || !req.body.secret) {
             return res.sendStatus(400);
         }
+
+        console.log(req);
 
         // Check if the coin exists.
         Coin.find({"id": req.body.id}, {_id: false, __v: false, secret: false}, function(err, coin) {
@@ -111,20 +112,20 @@ module.exports = function(app) {
                     "id": req.body.id,
                     "name": req.body.name,
                     "symbol": req.body.symbol,
-                    "rank": null,
-                    "price_usd": req.body.price_usd,
-                    "price_btc": null,
-                    "market_cap_usd": req.body.market_cap_usd,
-                    "available_supply": null,
-                    "total_supply": null,
-                    "percent_change_1h": null,
-                    "percent_change_24h": null,
-                    "percent_change_7d": null,
+                    "rank": "N/A",
+                    "price_usd": req.body.price,
+                    "price_btc": "N/A",
+                    "market_cap_usd": req.body.market_cap,
+                    "available_supply": "N/A",
+                    "total_supply": "N/A",
+                    "percent_change_1h": "N/A",
+                    "percent_change_24h": "N/A",
+                    "percent_change_7d": "N/A",
                     "last_updated": time,
                 }
 
                 addCoin(newCoin, req.body.secret);
-                return res.send(newCoin);
+                return res.status(200).send(newCoin);
             }
 
             else {
@@ -137,25 +138,30 @@ module.exports = function(app) {
     // Edit an existing currency.
     app.put("/api/coin-data", function(req, res) {
         // Ensure user posted with correct inputs.
-        if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price_usd ||
-        !req.body.market_cap_usd || !req.body.secret) {
+        if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price || !req.body.market_cap || !req.body.secret) {
             return res.sendStatus(400);
         }
 
-        // Check if the coin exists.
-        Coin.find({"id": req.body.id, "secret": req.body.secret}, {_id: false, __v: false}, function(err, coin) {
+        // Check if the coin exists and secret is correct.
+        Coin.find({"id": req.body.id, "secret": req.body.secret}, {_id: false, __v: false, secret: false}, function(err, coin) {
+console.log("after 1");
+
             if (err) {
                 // Server error.
                 return res.sendStatus(500);
             }
 
+
             else if (coin.length == 0) {
                 // Coin does not exist.
+                console.log(coin);
                 return res.sendStatus(400);
             }
 
             else {
                 // Coin exists; update it.
+                console.log("after 2");
+
 
                 var date = new Date();
                 var time = date.getTime();
@@ -164,15 +170,15 @@ module.exports = function(app) {
                     "id": req.body.id,
                     "name": req.body.name,
                     "symbol": req.body.symbol,
-                    "rank": null,
-                    "price_usd": req.body.price_usd,
-                    "price_btc": null,
-                    "market_cap_usd": req.body.market_cap_usd,
-                    "available_supply": null,
-                    "total_supply": null,
-                    "percent_change_1h": null,
-                    "percent_change_24h": null,
-                    "percent_change_7d": null,
+                    "rank": "N/A",
+                    "price_usd": req.body.price,
+                    "price_btc": "N/A",
+                    "market_cap_usd": req.body.market_cap,
+                    "available_supply": "N/A",
+                    "total_supply": "N/A",
+                    "percent_change_1h": "N/A",
+                    "percent_change_24h": "N/A",
+                    "percent_change_7d": "N/A",
                     "last_updated": time,
                 }
 
@@ -182,16 +188,19 @@ module.exports = function(app) {
         });
     });
 
-    // Delete a currency
+    // Delete a currency.
     app.delete("/api/coin-data", function(req, res) {
-        Coin.find({}, {_id: false, __v: false}, function(err, coins) {
-            if (err) {
-                res.send(err);
-            }
-            else {
-                res.send(coins);
-            }
-        })
+        // Ensure user posted with correct inputs.
+        if (!req.body.id || !req.body.secret) {
+            return res.sendStatus(400);
+        }
+
+        console.log("deletign)")
+
+        Coin.deleteOne({id: req.body.id, secret: req.body.secret}, function(err, res) {
+            console.log(err)
+            console.log(res)
+        });
     });
 
 }

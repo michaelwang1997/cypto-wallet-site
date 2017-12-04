@@ -21,7 +21,7 @@ var coinSchema = mongoose.Schema({
         percent_change_24h: String,
         percent_change_7d: String,
         last_updated: String,
-        created_by: String
+        secret: String
     // },
 
     // archived_crypto: {

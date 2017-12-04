@@ -47,7 +47,7 @@ let addCoin = function(coinObject, username) {
             "percent_change_24h": coinObject.percent_change_24h,
             "percent_change_7d": coinObject.percent_change_7d,
             "last_updated": coinObject.last_updated,
-            "created_by": username
+            "secret": username
         },
         {"upsert": true},
         function(err,res) {
