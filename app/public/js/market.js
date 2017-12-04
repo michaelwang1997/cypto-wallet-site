@@ -32,7 +32,7 @@ $("#tableSearch").keyup(function myFunction() {
 $(function() {
 	$.ajax({
     	type: 'GET',
-    	url: 'http://localhost:3000/api/coin-data', // limit to 10 for now
+    	url: '/api/coin-data', // limit to 10 for now
     	success: function(data) {
     		$.each(data, function(index, item) {
 
