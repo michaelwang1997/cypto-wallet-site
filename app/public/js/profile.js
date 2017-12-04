@@ -10,12 +10,12 @@ $.ajax({
     url: "/api/wallet/coin",
     type: "GET",
     contentType: "application/json; charset=utf-8",
-    success: function (data) {
+    success: function(data) {
         wallet = jQuery.parseJSON(data)
         console.log(wallet)
     },
-    error: function (resp) {
-        return alert("Failed to buy the coin.");
+    error: function(error) {
+        console.log("Failed to GET wallet API:", error);
     }
 });
 
