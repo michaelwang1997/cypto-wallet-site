@@ -1,8 +1,11 @@
-/* A global state of each cryptocurrency.
- When using React, this will be part of the state. */
+/* Functions and objects for the user profile. */
 
+// Keep track of the user's coins.
 let wallet;
-let marketStats = {};
+// Keep track of the market statistics.
+let marketStats;
+
+// Populates the wallet with user's coins.
 $.ajax({
     url: "/api/wallet/coin",
     type: "GET",
@@ -16,6 +19,8 @@ $.ajax({
     }
 });
 
+/* Call the API and save all cryptocurrencys in wallet.
+ If user is persistent, update the coin list. */
 let getCoinStats = function () {
     $.ajax({
         type: "GET",
@@ -34,54 +39,59 @@ let getCoinStats = function () {
     })
 }
 
+/* Set up the session. */
+
 getCoinStats();
 
-
+// Increment a coin in the wallet by quantity.
 let buyCoin = function (coinID, quantity) {
-    if (!wallet[coinID])
-        wallet[coinID] = 0
-    wallet[coinID] += quantity
-    refreshValue()
+    if (!wallet[coinID]) {
+        wallet[coinID] = 0;
+    }
+    wallet[coinID] += quantity;
+    updatePage();
 }
 
+// Decrement a coin in wallet by quantity.
 let sellCoin = function (coinID, quantity) {
-    if (wallet[coinID] && quantity <= wallet[coinID])
-        wallet[coinID] -= quantity
-    if (wallet[coinID] == 0)
-        delete wallet[coinID]
-    refreshValue()
+    if (wallet[coinID] && quantity <= wallet[coinID]) {
+        wallet[coinID] -= quantity;
+    }
+    if (wallet[coinID] == 0) {
+        delete wallet[coinID];
+    }
+    updatePage();
 }
 
-let refreshValue = function () {
-    var walletValue = 0
+// Update the page with new coin statistics.
+let updatePage = function () {
+    var walletValue = 0;
 
     for (let coin in wallet) {
-        let id = coin
-        let quantity = coins[coin]
-        let value = wallet[coin].price_usd
-        walletValue += quantity * value
+        let id = coin;
+        let quantity = coins[coin];
+        let value = marketStats[coin].price_usd;
+        walletValue += quantity * value;
     }
 
-    walletValue = walletValue.toFixed(2)
+    walletValue = walletValue.toFixed(2);
 
     // Update DOM elements.
-    $("#wallet-value").text(walletValue)
+    $("#wallet-value").text(walletValue);
 
     if (walletValue == 0) {
-        $("#empty").text("No coins currently.")
-        emptyChart()
+        $("#empty").text("No coins currently.");
+        emptyChart();
     } else {
-        $("#empty").empty()
-        generateChart(wallet, marketStats)
+        $("#empty").empty();
+        generateChart(wallet, marketStats);
     }
 }
 
-/* Call the API and save all cryptocurrencys in wallet.
- If user is persistent, update the coin list. */
 
 
 
-/* Set up the session. */
+
 
 /* Convert "-" delimited id into a readable name. */
 
@@ -227,6 +237,6 @@ let newCoinLayout = function (coinID, quantity) {
 
 let updateCoinList = function () {
     $.each(wallet, function (coin, quantity) {
-        newCoinLayout(coin, quantity).appendTo(".coin-list")
+        newCoinLayout(coin, quantity).appendTo(".coin-list");
     })
 }

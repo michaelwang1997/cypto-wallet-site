@@ -2,6 +2,7 @@ const apiUtil = require('./api_util');
 const User = require('./models/user');
 
 module.exports = function(app, passport) {
+
     app.post("/api/wallet/coin/add", apiUtil.isLoggedIn, (req, res) => {
         if(!req.body.coinID) {
             return res.sendStatus(400);
@@ -76,7 +77,8 @@ module.exports = function(app, passport) {
 
     });
 
-    app.get("/api/wallet/coin", apiUtil.isLoggedIn, (req, res) => {
+    /* Get a user's wallet from the database. */
+    app.get("/api/wallet", apiUtil.isLoggedIn, (req, res) => {
         User.findOne({username: req.user.username}, (err, user) => {
             if(err) {
                 return res.sendStatus(500);
@@ -90,4 +92,5 @@ module.exports = function(app, passport) {
         });
 
     });
+
 };
