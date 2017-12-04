@@ -34,6 +34,10 @@ $(function() {
     	type: 'GET',
     	url: '/api/coin-data', // limit to 10 for now
     	success: function(data) {
+			data.sort(function(a, b) {
+    			return parseFloat(a.rank) - parseFloat(b.rank);
+			});
+
     		$.each(data, function(index, item) {
 
 				let tableRow = $("<tr>")
