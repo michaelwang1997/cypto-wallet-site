@@ -10,10 +10,17 @@ module.exports = function(app) {
         1: "Another test message"
     };
 
+    app.get("/api/messages/latest", function (req, res) {
+        var message = messages[messageCount - 1];
+        res.status(200).send(message);
+    });
+
 
     app.post("/api/messages", function(req, res) {
         var message = req.body.data;
+        console.log(req.body);
         messages[messageCount] = message;
+        console.log(messages);
         messageCount++;
         res.status(200).send(JSON.stringify("Post request received"));
     });
@@ -28,6 +35,10 @@ module.exports = function(app) {
         if (messages[id]) {
             delete messages[id];
             res.status(200).send("Deleted message with id " + id);
+
+            /*while (!messages[messageCount - 1] && messageCount > 0) {
+                messageCount--;
+            }*/
         } else {
             res.status(400).send("That message id does not exist")
         }
