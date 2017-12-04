@@ -2,6 +2,7 @@
 
 // Keep track of the user's coins.
 let wallet;
+let walletValue = 0
 // Keep track of the market statistics.
 let marketStats = {};
 
@@ -10,83 +11,14 @@ $.ajax({
     url: "/api/wallet",
     type: "GET",
     contentType: "application/json; charset=utf-8",
-    success: function(data) {
+    success: function (data) {
         wallet = jQuery.parseJSON(data)
         console.log(wallet)
     },
-    error: function(error) {
+    error: function (error) {
         console.log("Failed to GET wallet API:", error);
     }
 });
-
-/* Call the API and save all cryptocurrencys in wallet.
- If user is persistent, update the coin list. */
-let getCoinStats = function () {
-    $.ajax({
-        type: "GET",
-        url: 'http://localhost:3000/api/coin-data',
-        success: function (data) {
-            for (let i in data) {
-                marketStats[data[i].id] = data[i]
-            }
-            updateCoinList()
-        },
-        statusCode: {
-            404: function () {
-                alert("Coin not found")
-            }
-        }
-    })
-}
-
-/* Set up the session. */
-
-getCoinStats();
-
-// Increment a coin in the wallet by quantity.
-let buyCoin = function (coinID, quantity) {
-    if (!wallet[coinID]) {
-        wallet[coinID] = 0;
-    }
-    wallet[coinID] += quantity;
-    updatePage();
-}
-
-// Decrement a coin in wallet by quantity.
-let sellCoin = function (coinID, quantity) {
-    if (wallet[coinID] && quantity <= wallet[coinID]) {
-        wallet[coinID] -= quantity;
-    }
-    if (wallet[coinID] == 0) {
-        delete wallet[coinID];
-    }
-    updatePage();
-}
-
-// Update the page with new coin statistics.
-let updatePage = function () {
-    var walletValue = 0;
-
-    for (let coin in wallet) {
-        let quantity = wallet[coin];
-        let value = marketStats[coin].price_usd;
-        walletValue += quantity * value;
-    }
-
-    walletValue = walletValue.toFixed(2);
-
-    // Update DOM elements.
-    $("#wallet-value").text(walletValue);
-
-    if (walletValue == 0) {
-        $("#empty").text("No coins currently.");
-        emptyChart();
-    } else {
-        $("#empty").empty();
-        generateChart(wallet, marketStats);
-    }
-}
-
 
 /* Convert "-" delimited id into a readable name. */
 
@@ -117,7 +49,6 @@ let buyClickListener = function () {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({"coinID": coinID}),
         success: function (resp) {
-            return alert("Successfully purchased the coin.");
         },
         error: function (resp) {
             return alert("Failed to buy the coin.");
@@ -147,7 +78,6 @@ let sellClickListener = function () {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({"coinID": coinID}),
         success: function (resp) {
-            return alert("Successfully purchased the coin.");
         },
         error: function (resp) {
             return alert("Failed to buy the coin.");
@@ -235,3 +165,75 @@ let updateCoinList = function () {
         newCoinLayout(coin, quantity).appendTo(".coin-list");
     })
 }
+
+/* Call the API and save all cryptocurrencys in wallet.
+ If user is persistent, update the coin list. */
+let getCoinStats = function () {
+    $.ajax({
+        type: "GET",
+        url: 'http://localhost:3000/api/coin-data',
+        success: function (data) {
+            for (let i in data) {
+                marketStats[data[i].id] = data[i]
+            }
+            updateCoinList()
+        },
+        statusCode: {
+            404: function () {
+                alert("Coin not found")
+            }
+        }
+    })
+}
+
+/* Set up the session. */
+
+getCoinStats();
+
+// Increment a coin in the wallet by quantity.
+let buyCoin = function (coinID, quantity) {
+    if (!wallet[coinID]) {
+        wallet[coinID] = 0;
+    }
+    wallet[coinID] += quantity;
+    updatePage();
+}
+
+// Decrement a coin in wallet by quantity.
+let sellCoin = function (coinID, quantity) {
+    if (wallet[coinID] && quantity <= wallet[coinID]) {
+        wallet[coinID] -= quantity;
+    }
+    if (wallet[coinID] == 0) {
+        delete wallet[coinID];
+    }
+    updatePage();
+}
+
+let getTotal = function () {
+    walletValue = 0;
+    for (let coin in wallet) {
+        let quantity = wallet[coin];
+        let value = marketStats[coin].price_usd;
+        walletValue += quantity * value;
+    }
+    walletValue = walletValue.toFixed(2);
+}
+getTotal();
+// Update the page with new coin statistics.
+let updatePage = function () {
+    getTotal();
+    console.log(walletValue)
+    // Update DOM elements.
+    $("#wallet-value").text(walletValue);
+
+    if (walletValue == 0) {
+        $("#empty").text("No coins currently.");
+        emptyChart();
+    } else {
+        $("#empty").empty();
+        generateChart(wallet, marketStats);
+    }
+}
+updatePage();
+
