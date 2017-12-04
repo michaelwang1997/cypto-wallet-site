@@ -141,15 +141,29 @@ let buyClickListener = function() {
 
 let sellClickListener = function() {
     // Extract the id.
-    coinID = $(this).attr("id").replace("-sell", "")
+    let coinID = $(this).attr("id").replace("-buy", "")
+    let quantity = user.getQuantity(coinID)
     user.sellCoin(coinID, 1)
     // Update visual quantity.
-    $("." + coinID + "-qty").text(user.getQuantity(coinID))
-    // Remove the unique wallet coin button if there's none left.
-    if (!user.getQuantity(coinID)) {
-        $("#" + coinID + "-btn").remove()
-        $("#statistics").empty()
-    }
+    // $("." + coinID + "-qty").text(user.getQuantity(coinID))
+    // // Remove the unique wallet coin button if there's none left.
+    // if (!quantity) {
+    //     $("#" + coinID + "-btn").remove()
+    //     $("#statistics").empty()
+    // }
+
+    $.ajax({
+        url: "/api/wallet/coin/decrement",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"coinID": coinID}),
+        success: function(resp) {
+            return alert("Successfully purchased the coin.");
+        },
+        error: function(resp) {
+            return alert("Failed to buy the coin.");
+        }
+    });
 }
 
 /* Click listener for a cryptocurrency wallet button. It updates "Coin Statistics".*/
