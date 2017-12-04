@@ -3,11 +3,11 @@
 // Keep track of the user's coins.
 let wallet;
 // Keep track of the market statistics.
-let marketStats;
+let marketStats = {};
 
 // Populates the wallet with user's coins.
 $.ajax({
-    url: "/api/wallet/coin",
+    url: "/api/wallet",
     type: "GET",
     contentType: "application/json; charset=utf-8",
     success: function(data) {
@@ -68,8 +68,7 @@ let updatePage = function () {
     var walletValue = 0;
 
     for (let coin in wallet) {
-        let id = coin;
-        let quantity = coins[coin];
+        let quantity = wallet[coin];
         let value = marketStats[coin].price_usd;
         walletValue += quantity * value;
     }
@@ -89,10 +88,6 @@ let updatePage = function () {
 }
 
 
-
-
-
-
 /* Convert "-" delimited id into a readable name. */
 
 let idToName = function (id) {
@@ -109,7 +104,7 @@ let idToName = function (id) {
 let buyClickListener = function () {
     // Extract the id.
     let coinID = $(this).attr("id").replace("-buy", "")
-    let quantity = getQuantity(coinID)
+    let quantity = wallet[coinID]
     // Add unique wallet coin button if it doesn't exist.
     if (!quantity) {
         newCoinLayout(coinID, 0).appendTo(".coin-list")
@@ -117,7 +112,7 @@ let buyClickListener = function () {
     buyCoin(coinID, 1)
 
     $.ajax({
-        url: "/api/wallet/coin/add",
+        url: "/api/wallet/increment",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({"coinID": coinID}),
@@ -129,15 +124,15 @@ let buyClickListener = function () {
         }
     });
     // Update visual quantity.
-    $("." + coinID + "-qty").text(getQuantity(coinID))
+    $("." + coinID + "-qty").text(wallet[coinID])
 }
 
 /* Click listener for the sell button. */
 
 let sellClickListener = function () {
     // Extract the id.
-    let coinID = $(this).attr("id").replace("-buy", "")
-    let quantity = getQuantity(coinID)
+    let coinID = $(this).attr("id").replace("-sell", "")
+    let quantity = wallet[coinID]
     sellCoin(coinID, 1)
     // Update visual quantity.
     // $("." + coinID + "-qty").text(user.getQuantity(coinID))
@@ -147,7 +142,7 @@ let sellClickListener = function () {
     //     $("#statistics").empty()
     // }
     $.ajax({
-        url: "/api/wallet/coin/decrement",
+        url: "/api/wallet/decrement",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({"coinID": coinID}),
@@ -175,7 +170,7 @@ let coinInfoListener = function () {
         stats.append("<br>")
     }
 
-    let totalValue = (coin.price_usd * getQuantity(coinID)).toFixed(2)
+    let totalValue = (coin.price_usd * wallet[coinID]).toFixed(2)
     appendStrongElement("Your Total Value", totalValue)
     stats.append("<br>")
     // The following is repetitive but each stat is formatted differently.
@@ -219,7 +214,7 @@ let newCoinLayout = function (coinID, quantity) {
     let coinQuantity = $("<span>", {"class": coinID + "-qty"}).append(quantity).appendTo(quantityDiv)
 
     let coinSymbol = $("<span>", {"class": coinID + "-symbol"})
-        .append(" " + wallet[coinID].symbol)
+        .append(" " + marketStats[coinID].symbol)
         .appendTo(quantityDiv)
 
     let buttonDiv = $("<div>").css({"float": "right"}).appendTo(coinLayout)

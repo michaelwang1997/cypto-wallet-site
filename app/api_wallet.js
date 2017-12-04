@@ -3,7 +3,7 @@ const User = require('./models/user');
 
 module.exports = function(app, passport) {
 
-    app.post("/api/wallet/coin/add", apiUtil.isLoggedIn, (req, res) => {
+    app.post("/api/wallet/increment", apiUtil.isLoggedIn, (req, res) => {
         if(!req.body.coinID) {
             return res.sendStatus(400);
         }
@@ -38,7 +38,7 @@ module.exports = function(app, passport) {
 
     });
 
-    app.post("/api/wallet/coin/decrement", apiUtil.isLoggedIn, (req, res) => {
+    app.post("/api/wallet/decrement", apiUtil.isLoggedIn, (req, res) => {
         if(!req.body.coinID) {
             return res.sendStatus(400);
         }
