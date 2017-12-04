@@ -3,11 +3,12 @@ let addCoin = require('./update-coin-db');
 
 module.exports = function(app) {
 
-
+    // Keeps track of all messages sent by administrators.
     var messageCount = 0;
     var messages = {
     };
 
+    // Returns the latest message pushed by an administrator.
     app.get("/api/messages/latest", function (req, res) {
         var msg = messages[messageCount - 1];
         var obj = {
@@ -17,7 +18,7 @@ module.exports = function(app) {
         res.status(200).send(JSON.stringify(obj));
     });
 
-
+    // API call to post a messages.
     app.post("/api/messages", function(req, res) {
         var message = req.body.data;
         console.log(req.body);
@@ -32,10 +33,12 @@ module.exports = function(app) {
 
     });
 
+    // API call to get all messages.
     app.get("/api/messages", function(req, res) {
         res.status(200).send(messages);
     });
 
+    // API call to delete a message with provided ID.
     app.delete("/api/messages/:id", function(req, res) {
         var id = req.param('id');
 
@@ -64,6 +67,7 @@ module.exports = function(app) {
         })
     });
 
+    // Get information for curreny with id ID.
     app.get("/api/coin-data/:id", function(req, res) {
         Coin.find({"id": req.params.id}, {_id: false, __v: false}, function(err, coin) {
             if (err) {
@@ -81,6 +85,8 @@ module.exports = function(app) {
         })
     });
 
+
+    // Get data on all currencies
     app.post("/api/coin-data", function(req, res) {
 
         Coin.find({"id": req.body.id}, {_id: false, __v: false}, function(err, coin) {
@@ -114,6 +120,7 @@ module.exports = function(app) {
         })
     });
 
+    // Edit a currency
     app.put("/api/coin-data", function(req, res) {
         Coin.find({}, {_id: false, __v: false}, function(err, coins) {
             if (err) {
@@ -125,6 +132,7 @@ module.exports = function(app) {
         })
     });
 
+    // Delete a currency
     app.delete("/api/coin-data", function(req, res) {
         Coin.find({}, {_id: false, __v: false}, function(err, coins) {
             if (err) {

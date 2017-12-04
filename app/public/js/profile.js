@@ -12,9 +12,12 @@ $.ajax({
     type: "GET",
     contentType: "application/json; charset=utf-8",
     success: function (data) {
-        wallet = jQuery.parseJSON(data)
+        if (data) {
+            wallet = JSON.parse(data);    
+        } else {
+            wallet = {};
+        }
         getCoinStats();
-        console.log(wallet)
     },
     error: function (error) {
         console.log("Failed to GET wallet API:", error);
@@ -161,7 +164,6 @@ let getTotal = function () {
     walletValue = 0;
     for (let coin in wallet) {
         let quantity = wallet[coin];
-        console.log(marketStats[coin])
         let value = marketStats[coin].price_usd;
         walletValue += quantity * value;
     }
@@ -170,7 +172,6 @@ let getTotal = function () {
 // Update the page with new coin statistics.
 let updatePage = function () {
     getTotal();
-    console.log(walletValue)
     // Update DOM elements.
     $("#wallet-value").text(walletValue);
 
@@ -189,7 +190,6 @@ let buyClickListener = function () {
     // Extract the id.
     let coinID = $(this).attr("id").replace("-buy", "")
     // Add unique wallet coin button if it doesn't exist.
-    console.log(wallet[coinID])
     if (!wallet[coinID]) {
         newCoinLayout(coinID, 0).appendTo(".coin-list")
     }

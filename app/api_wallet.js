@@ -3,6 +3,8 @@ const User = require('./models/user');
 
 module.exports = function(app, passport) {
 
+
+    // Api call to buy a currency
     app.post("/api/wallet/increment", apiUtil.isLoggedIn, (req, res) => {
         if(!req.body.coinID) {
             return res.sendStatus(400);
@@ -38,6 +40,8 @@ module.exports = function(app, passport) {
 
     });
 
+
+    // API call to sell a currency.
     app.post("/api/wallet/decrement", apiUtil.isLoggedIn, (req, res) => {
         if(!req.body.coinID) {
             return res.sendStatus(400);
@@ -69,8 +73,6 @@ module.exports = function(app, passport) {
                 if(err) {
                     return res.sendStatus(500);
                 }
-
-                console.log(newUser);
                 return res.sendStatus(200);
             });
         });

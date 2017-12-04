@@ -1,6 +1,8 @@
 document.getElementById("table").style.height =
 	((window.innerHeight - 100 - document.getElementById("tableSearch").offsetHeight)) + "px";
 
+
+// Search algorithm for the search bar.
 $("#tableSearch").keyup(function myFunction() {
 	// Declare variables
 	var input, filter, table, tr, td, i;
@@ -25,6 +27,8 @@ $("#tableSearch").keyup(function myFunction() {
 	}
 });
 
+
+// Populate the table using data taken from our API.
 $(function() {
 	$.ajax({
     	type: 'GET',
