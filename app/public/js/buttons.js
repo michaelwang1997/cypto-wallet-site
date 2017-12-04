@@ -21,9 +21,3 @@ let newSellButton = function(coinID) {
                 "width": "35px"
             })
 }
-
-/* Click listener for the "BUY COINS" button. */
-
-$("#add-coins").click(function() {
-    displayAndHide("market")
-})

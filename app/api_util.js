@@ -1,3 +1,5 @@
+// Authentication middleware.
+
 function isLoggedIn(req, res, next) {
     // Continue if the user is authenticated.
     if (req.isAuthenticated()) {

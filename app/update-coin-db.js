@@ -1,6 +1,7 @@
 const request = require('request');
 var Coin = require('./models/coin.js');
 
+// Search the CoinMarketCap API for cryptocurrencies and store them in our database.
 setInterval(function() {
     request("https://api.coinmarketcap.com/v1/ticker/?limit=100", function(error, response, body) {
         if (error) {
@@ -8,25 +9,13 @@ setInterval(function() {
         } else {
             data = JSON.parse(body);
             for (let index in data) {
-
                 let coinObject = data[index];
-                // // Check if the coin was updated since the last time.
-                // wasUpdated(schema, coin).then((isChanged) => {
-                //     if (isChanged) {
-                //         console.log("Was updated");
-                //         updateCoin(schema, coin);
-                //     }
-                // });
-
                 let coin = new Coin();
                 addCoin(coinObject, null);
             }
         }
     });
-}, 5000);
-
-
-//120000
+}, 20000);
 
 // Add a coin to the database.
 let addCoin = function(coinObject, username) {

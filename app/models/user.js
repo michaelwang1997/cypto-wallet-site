@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const bcrypt   = require('bcrypt-nodejs');
 
-
 // USER SCHEMA
 
 var userSchema = mongoose.Schema({
@@ -30,4 +29,4 @@ userSchema.methods.validPassword = function(password) {
 };
 
 // Export the user model.
-module.exports = mongoose.model('hello', userSchema);
+module.exports = mongoose.model('team-undefined-user', userSchema);

@@ -38,7 +38,7 @@ app.use(morgan("dev"));
 app.use(methodOverride("_method"));
 
 app.use(session({
-    secret: "team-03-undefined",
+    secret: "team-undefined",
     resave: false,
     saveUninitialized: true
 }));

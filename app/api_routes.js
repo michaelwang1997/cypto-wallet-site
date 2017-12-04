@@ -41,14 +41,9 @@ module.exports = function(app) {
     // API call to delete a message with provided ID.
     app.delete("/api/messages/:id", function(req, res) {
         var id = req.param('id');
-
         if (messages[id]) {
             delete messages[id];
             res.status(200).send("Deleted message with id " + id);
-
-            /*while (!messages[messageCount - 1] && messageCount > 0) {
-            messageCount--;
-        }*/
         } else {
         res.status(400).send("That message id does not exist")
         }
@@ -62,6 +57,7 @@ module.exports = function(app) {
                 return res.sendStatus(500);
             }
             else {
+                // Send coins.
                 res.status(200).send(coins);
             }
         })
@@ -76,10 +72,12 @@ module.exports = function(app) {
             }
 
             else if (coin.length == 0) {
+                // Coin ID doesn't exist.
                 return res.sendStatus(400);
             }
 
             else {
+                // Coin exists, send its information.
                 res.status(200).send(coin);
             }
         });
@@ -92,8 +90,6 @@ module.exports = function(app) {
         if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price || !req.body.market_cap || !req.body.secret) {
             return res.sendStatus(400);
         }
-
-        console.log(req);
 
         // Check if the coin exists.
         Coin.find({"id": req.body.id}, {_id: false, __v: false, secret: false}, function(err, coin) {

@@ -32,21 +32,7 @@ module.exports = function(app, passport) {
 
     // MARKET
     app.get("/market", isLoggedIn, function(req, res) {
-
-
-
-        request("http://localhost:3000/api/coin-data", function(error, response, body) {
-            if (error) {
-                console.log("Something went wrong: ", error)
-            } else {
-                data = JSON.parse(body);
-                data.sort(function(a, b) {
-                    return parseFloat(a.rank) - parseFloat(b.rank);
-                });
-                res.render("market", { "user": req.user, "data": data });
-            }
-        });
-
+        res.render("market", {user: req.user});
     });
 
     // CONTACT US
