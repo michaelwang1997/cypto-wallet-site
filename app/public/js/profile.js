@@ -1,70 +1,71 @@
 /* A global state of each cryptocurrency.
  When using React, this will be part of the state. */
 
-let coinStats = {}
-
-/* A User class that we use to demonstrate interactivity. */
-
-class User {
-
-    constructor(username) {
-        this.username = username
-        this.walletValue = 0
-        this.coins = {}
+let coinStats;
+let marketStats;
+$.ajax({
+    url: "/api/wallet/coin",
+    type: "GET",
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+        console.log(data);
+        coinStats = data;
+    },
+    error: function (resp) {
+        return alert("Failed to buy the coin.");
     }
+});
 
-    /* Add or increment coin in this.coins */
-
-    buyCoin(coinID, quantity) {
-        if (!this.coins[coinID])
-            this.coins[coinID] = 0
-        this.coins[coinID] += quantity
-        this.refreshValue()
-
-
-    }
-
-    /* Remove or decrement coin in this.coins */
-
-    sellCoin(coinID, quantity) {
-        if (this.coins[coinID] && quantity <= this.coins[coinID])
-            this.coins[coinID] -= quantity
-        if (this.coins[coinID] == 0)
-            delete this.coins[coinID]
-        this.refreshValue()
-    }
-
-    /* Get quantity of a coin. */
-
-    getQuantity(coinID) {
-        return this.coins[coinID]
-    }
-
-    /* Refresh the wallet value and corresponding DOM elements. */
-
-    refreshValue() {
-        // Update wallet value.
-        this.walletValue = 0
-
-        for (let coin in this.coins) {
-            let id = coin
-            let quantity = this.coins[coin]
-            let value = coinStats[coin].price_usd
-            this.walletValue += quantity * value
+$(function () {
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/api/coin-data', // limit to 10 for now
+        success: function (data) {
+            marketStats = data;
+        },
+        error: function (xhr, error) {
+            console.log("Something went wrong: ", error)
         }
+    })
+})
 
-        this.walletValue = this.walletValue.toFixed(2)
 
-        // Update DOM elements.
-        $("#wallet-value").text(user.walletValue)
+let buyCoin = function (coinID, quantity) {
+    if (!coinStats[coinID])
+        coinStats[coinID] = 0
+    coinStats[coinID] += quantity
+    refreshValue()
+}
 
-        if (this.walletValue == 0) {
-            $("#empty").text("No coins currently.")
-            emptyChart()
-        } else {
-            $("#empty").empty()
-            generateChart(this)
-        }
+let sellCoin = function (coinID, quantity) {
+    if (coinStats[coinID] && quantity <= coinStats[coinID])
+        coinStats[coinID] -= quantity
+    if (coinStats[coinID] == 0)
+        delete coinStats[coinID]
+    refreshValue()
+}
+
+let refreshValue = function () {
+    var walletValue = 0
+
+    for (let coin in coinStats) {
+        let id = coin
+        let quantity = coins[coin]
+        // let value = coinStats[coin].price_usd
+        // walletValue += quantity * value
+    }
+
+    walletValue = walletValue.toFixed(2)
+
+    // Update DOM elements.
+    $("#wallet-value").text(walletValue)
+
+    if (walletValue == 0) {
+        $("#empty").text("No coins currently.")
+        emptyChart()
+    } else {
+        $("#empty").empty()
+        generateChart(this)
     }
 }
 
@@ -74,7 +75,7 @@ class User {
 let getCoinStats = function () {
     $.ajax({
         type: "GET",
-        url: 'https://api.coinmarketcap.com/v1/ticker/',
+        url: 'http://localhost:3000/api/coin-data',
         success: function (data) {
             for (let i in data) {
                 coinStats[data[i].id] = data[i]
@@ -92,11 +93,6 @@ let getCoinStats = function () {
 /* Set up the session. */
 
 getCoinStats()
-
-let user = new User("John Smith");
-
-$("#username").text(user.username)
-$("#wallet-value").text(user.walletValue)
 
 /* Convert "-" delimited id into a readable name. */
 
@@ -200,19 +196,18 @@ let coinInfoListener = function () {
 
 let newCoinLayout = function (coinID, quantity) {
     // Get coin name for the button.
-    $.ajax({
-        url: "/api/wallet/coin",
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({"coinID": coinID}),
-        success: function (data) {
-            console.log(data);
-        },
-        error: function (resp) {
-            return alert("Failed to buy the coin.");
-        }
-    });
-
+    // $.ajax({
+    //     url: "/api/wallet/coin",
+    //     type: "GET",
+    //     contentType: "application/json; charset=utf-8",
+    //     data: JSON.stringify({"coinID": coinID}),
+    //     success: function (data) {
+    //         console.log(data);
+    //     },
+    //     error: function (resp) {
+    //         return alert("Failed to buy the coin.");
+    //     }
+    // });
 
 
     coinName = idToName(coinID)
