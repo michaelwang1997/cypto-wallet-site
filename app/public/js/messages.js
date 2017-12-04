@@ -9,7 +9,7 @@ function ajaxMessage() {
 	$.ajax({
 		// Make the request to get the latest message from our local message db
 		type: 'GET',
-		url: 'http://localhost:3000/api/messages/latest',
+		url: '/api/messages/latest',
 		success: function(data) {
 			var modal = document.getElementById("messageModal");
 			var modalText = document.getElementById("messageSpan");
