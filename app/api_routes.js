@@ -11,8 +11,12 @@ module.exports = function(app) {
     };
 
     app.get("/api/messages/latest", function (req, res) {
-        var message = messages[messageCount - 1];
-        res.status(200).send(message);
+        var msg = messages[messageCount - 1];
+        var obj = {
+            id: messageCount - 1,
+            message: msg
+        }
+        res.status(200).send(JSON.stringify(obj));
     });
 
 
