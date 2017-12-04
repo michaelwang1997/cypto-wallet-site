@@ -136,15 +136,14 @@ module.exports = function(app) {
     });
 
     // Edit an existing currency.
-    app.put("/api/coin-data", function(req, res) {
+    app.put("/api/coin-data/:id", function(req, res) {
         // Ensure user posted with correct inputs.
-        if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price || !req.body.market_cap || !req.body.secret) {
+        if (!req.body.name || !req.body.symbol || !req.body.price || !req.body.market_cap || !req.body.secret) {
             return res.sendStatus(400);
         }
 
         // Check if the coin exists and secret is correct.
-        Coin.find({"id": req.body.id, "secret": req.body.secret}, {_id: false, __v: false, secret: false}, function(err, coin) {
-console.log("after 1");
+        Coin.find({"id": req.params.id, "secret": req.body.secret}, {_id: false, __v: false, secret: false}, function(err, coin) {
 
             if (err) {
                 // Server error.
@@ -154,15 +153,11 @@ console.log("after 1");
 
             else if (coin.length == 0) {
                 // Coin does not exist.
-                console.log(coin);
                 return res.sendStatus(400);
             }
 
             else {
                 // Coin exists; update it.
-                console.log("after 2");
-
-
                 var date = new Date();
                 var time = date.getTime();
 
@@ -189,17 +184,19 @@ console.log("after 1");
     });
 
     // Delete a currency.
-    app.delete("/api/coin-data", function(req, res) {
+    app.delete("/api/coin-data/:id", function(req, res) {
         // Ensure user posted with correct inputs.
-        if (!req.body.id || !req.body.secret) {
+        if (!req.body.secret) {
             return res.sendStatus(400);
         }
 
-        console.log("deletign)")
+        Coin.deleteOne({id: req.params.id, secret: req.body.secret}, function(err, resp) {
+            if (err) {
+                // Server error.
+                return res.sendStatus(500);
+            }
 
-        Coin.deleteOne({id: req.body.id, secret: req.body.secret}, function(err, res) {
-            console.log(err)
-            console.log(res)
+            return res.status(200).send({message: "Successful delete!"});
         });
     });
 
