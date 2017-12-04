@@ -36,7 +36,7 @@ $(function() {
 				let rank = $("<td>").append(item.rank)
 
 				let nameDiv = $("<div>").css({ "float": "left" }).append(item.name)
-				let button = newBuyButton(item.id).click(sellClickListener)
+				let button = newBuyButton(item.id).click(buyClickListener)
 
 				let buttonDiv = $("<div>").css({ "float": "right" }).append(button)
 

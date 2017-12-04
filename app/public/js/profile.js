@@ -2,7 +2,7 @@
 
 // Keep track of the user's coins.
 let wallet;
-let walletValue = 0
+let walletValue = 0;
 // Keep track of the market statistics.
 let marketStats = {};
 
@@ -13,6 +13,7 @@ $.ajax({
     contentType: "application/json; charset=utf-8",
     success: function (data) {
         wallet = jQuery.parseJSON(data)
+        getCoinStats();
         console.log(wallet)
     },
     error: function (error) {
@@ -29,60 +30,6 @@ let idToName = function (id) {
         name += words[i].charAt(0).toUpperCase() + words[i].slice(1) + " ";
     }
     return name.trim();
-}
-
-/* Click listener for the add button. */
-
-let buyClickListener = function () {
-    // Extract the id.
-    let coinID = $(this).attr("id").replace("-buy", "")
-    let quantity = wallet[coinID]
-    // Add unique wallet coin button if it doesn't exist.
-    if (!quantity) {
-        newCoinLayout(coinID, 0).appendTo(".coin-list")
-    }
-    buyCoin(coinID, 1)
-
-    $.ajax({
-        url: "/api/wallet/increment",
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({"coinID": coinID}),
-        success: function (resp) {
-        },
-        error: function (resp) {
-            return alert("Failed to buy the coin.");
-        }
-    });
-    // Update visual quantity.
-    $("." + coinID + "-qty").text(wallet[coinID])
-}
-
-/* Click listener for the sell button. */
-
-let sellClickListener = function () {
-    // Extract the id.
-    let coinID = $(this).attr("id").replace("-sell", "")
-    let quantity = wallet[coinID]
-    sellCoin(coinID, 1)
-    // Update visual quantity.
-    $("." + coinID + "-qty").text(wallet[coinID])
-    // Remove the unique wallet coin button if there's none left.
-    if (!quantity) {
-        $("#" + coinID + "-btn").remove()
-        $("#statistics").empty()
-    }
-    $.ajax({
-        url: "/api/wallet/decrement",
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({"coinID": coinID}),
-        success: function (resp) {
-        },
-        error: function (resp) {
-            return alert("Failed to buy the coin.");
-        }
-    });
 }
 
 /* Click listener for a cryptocurrency wallet button. It updates "Coin Statistics".*/
@@ -176,6 +123,7 @@ let getCoinStats = function () {
             for (let i in data) {
                 marketStats[data[i].id] = data[i]
             }
+            updatePage();
             updateCoinList()
         },
         statusCode: {
@@ -188,7 +136,6 @@ let getCoinStats = function () {
 
 /* Set up the session. */
 
-getCoinStats();
 
 // Increment a coin in the wallet by quantity.
 let buyCoin = function (coinID, quantity) {
@@ -214,12 +161,12 @@ let getTotal = function () {
     walletValue = 0;
     for (let coin in wallet) {
         let quantity = wallet[coin];
+        console.log(marketStats[coin])
         let value = marketStats[coin].price_usd;
         walletValue += quantity * value;
     }
     walletValue = walletValue.toFixed(2);
 }
-getTotal();
 // Update the page with new coin statistics.
 let updatePage = function () {
     getTotal();
@@ -235,5 +182,57 @@ let updatePage = function () {
         generateChart(wallet, marketStats);
     }
 }
-updatePage();
 
+/* Click listener for the add button. */
+
+let buyClickListener = function () {
+    // Extract the id.
+    let coinID = $(this).attr("id").replace("-buy", "")
+    // Add unique wallet coin button if it doesn't exist.
+    console.log(wallet[coinID])
+    if (!wallet[coinID]) {
+        newCoinLayout(coinID, 0).appendTo(".coin-list")
+    }
+    buyCoin(coinID, 1)
+
+    $.ajax({
+        url: "/api/wallet/increment",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"coinID": coinID}),
+        success: function (resp) {
+        },
+        error: function (resp) {
+            return alert("Failed to buy the coin.");
+        }
+    });
+    // Update visual quantity.
+    $("." + coinID + "-qty").text(wallet[coinID])
+}
+
+/* Click listener for the sell button. */
+
+let sellClickListener = function () {
+    // Extract the id.
+    let coinID = $(this).attr("id").replace("-sell", "")
+    sellCoin(coinID, 1)
+    let quantity = wallet[coinID]
+    // Update visual quantity.
+    $("." + coinID + "-qty").text(wallet[coinID])
+    // Remove the unique wallet coin button if there's none left.
+    if (!quantity) {
+        $("#" + coinID + "-btn").remove()
+        $("#statistics").empty()
+    }
+    $.ajax({
+        url: "/api/wallet/decrement",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"coinID": coinID}),
+        success: function (resp) {
+        },
+        error: function (resp) {
+            return alert("Failed to buy the coin.");
+        }
+    });
+}
