@@ -1,5 +1,7 @@
-//console.log(user);
 var newestMessage = "";
+var newId = -1;
+
+var counter = 0;
 
 function ajaxMessage() {
 	$.ajax({
@@ -8,16 +10,21 @@ function ajaxMessage() {
 		success: function(data) {
 			var modal = document.getElementById("messageModal");
 			var modalText = document.getElementById("messageSpan");
-			console.log(data);
-			if (data != newestMessage) {
-				newestMessage = data;
-				console.log("New latest message: " + newestMessage);
+			var data = JSON.parse(data);
+			if (data.id != newId) {
+				newestMessage = data.message;
+				newId = data.id
 				modalText.innerHTML = newestMessage;
+				counter = 0;
                 $("#messageModal").fadeIn(1000);
 			}
 			else{
-                $("#messageModal").fadeOut(1000);
-		}
+				counter++;
+				if (counter == 10) {
+                	$("#messageModal").fadeOut(1000);
+                	counter = 0;
+                }
+			}
 		},
 		error: function(xhr, error) {
 			console.log("Something went wrong: ", error);
@@ -25,7 +32,7 @@ function ajaxMessage() {
 	})
 };
 	
-setInterval(ajaxMessage, 3000);
+setInterval(ajaxMessage, 1000);
 
 function wait(ms){
     var start = new Date().getTime();
