@@ -69,7 +69,7 @@ module.exports = function(app) {
 
     // Get information for curreny with id ID.
     app.get("/api/coin-data/:id", function(req, res) {
-        Coin.find({"id": req.params.id}, {_id: false, __v: false}, function(err, coin) {
+        Coin.find({"id": req.params.id}, {_id: false, __v: false, secret: false}, function(err, coin) {
             if (err) {
                 // Server error.
                 return res.sendStatus(500);
@@ -82,54 +82,104 @@ module.exports = function(app) {
             else {
                 res.status(200).send(coin);
             }
-        })
+        });
     });
 
 
-    // Get data on all currencies
+    // Create a new cryptocurrency.
     app.post("/api/coin-data", function(req, res) {
+        // Ensure user posted with correct inputs.
+        if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price_usd ||
+        !req.body.market_cap_usd || !req.body.secret) {
+            return res.sendStatus(400);
+        }
 
-        Coin.find({"id": req.body.id}, {_id: false, __v: false}, function(err, coin) {
+        // Check if the coin exists.
+        Coin.find({"id": req.body.id}, {_id: false, __v: false, secret: false}, function(err, coin) {
             if (err) {
-                res.status(404).send(err);
+                // Server error.
+                return res.sendStatus(500);
             }
 
             else if (coin.length == 0) {
+                // Coin doesn't exist; create it.
+
+                var date = new Date();
+                var time = date.getTime();
+
                 let newCoin = {
                     "id": req.body.id,
                     "name": req.body.name,
                     "symbol": req.body.symbol,
-                    "rank": req.body.rank,
+                    "rank": null,
                     "price_usd": req.body.price_usd,
-                    "price_btc": req.body.price_btc,
+                    "price_btc": null,
                     "market_cap_usd": req.body.market_cap_usd,
-                    "available_supply": req.body.available_supply,
-                    "total_supply": req.body.total_supply,
-                    "percent_change_1h": req.body.percent_change_1h,
-                    "percent_change_24h": req.body.percent_change_24h,
-                    "percent_change_7d": req.body.percent_change_7d,
-                    "last_updated": req.body.last_updated,
+                    "available_supply": null,
+                    "total_supply": null,
+                    "percent_change_1h": null,
+                    "percent_change_24h": null,
+                    "percent_change_7d": null,
+                    "last_updated": time,
                 }
 
-                addCoin(newCoin, req.user);
+                addCoin(newCoin, req.body.secret);
+                return res.send(newCoin);
             }
 
             else {
-                res.status(404).send("Coin already exists.");
+                // Coin already exists.
+                return res.sendStatus(400);
             }
         })
     });
 
-    // Edit a currency
+    // Edit an existing currency.
     app.put("/api/coin-data", function(req, res) {
-        Coin.find({}, {_id: false, __v: false}, function(err, coins) {
+        // Ensure user posted with correct inputs.
+        if (!req.body.id || !req.body.name || !req.body.symbol || !req.body.price_usd ||
+        !req.body.market_cap_usd || !req.body.secret) {
+            return res.sendStatus(400);
+        }
+
+        // Check if the coin exists.
+        Coin.find({"id": req.body.id, "secret": req.body.secret}, {_id: false, __v: false}, function(err, coin) {
             if (err) {
-                res.send(err);
+                // Server error.
+                return res.sendStatus(500);
             }
+
+            else if (coin.length == 0) {
+                // Coin does not exist.
+                return res.sendStatus(400);
+            }
+
             else {
-                res.send(coins);
+                // Coin exists; update it.
+
+                var date = new Date();
+                var time = date.getTime();
+
+                let newCoin = {
+                    "id": req.body.id,
+                    "name": req.body.name,
+                    "symbol": req.body.symbol,
+                    "rank": null,
+                    "price_usd": req.body.price_usd,
+                    "price_btc": null,
+                    "market_cap_usd": req.body.market_cap_usd,
+                    "available_supply": null,
+                    "total_supply": null,
+                    "percent_change_1h": null,
+                    "percent_change_24h": null,
+                    "percent_change_7d": null,
+                    "last_updated": time,
+                }
+
+                addCoin(newCoin, req.body.secret);
+                return res.send(newCoin);
             }
-        })
+        });
     });
 
     // Delete a currency
