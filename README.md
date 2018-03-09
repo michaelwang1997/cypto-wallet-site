@@ -1,3 +1,12 @@
+## Group Members
+Student 1: Patrick Gronowski 
+
+Student 2: Michael Wang 
+
+Student 3: Shoaib Shaikh 
+
+Student 4: Usama Zaki
+
 ## POST Request Format for Message API
 When making a post request for messages, please do so in the following format:
 
