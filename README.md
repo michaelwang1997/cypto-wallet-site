@@ -1,12 +1,3 @@
-## Group Members
-Student 1: Patrick Gronowski (998431086)
-
-Student 2: Michael Wang (1002317931)
-
-Student 3: Shoaib Shaikh (1002210840)
-
-Student 4: Usama Zaki (1002795503)
-
 ## POST Request Format for Message API
 When making a post request for messages, please do so in the following format:
 
