@@ -1,43 +1,61 @@
-<style>
-main {font-size: 1.5em;}
-li {margin-bottom: 10px;}
-</style>
-<main>
-<h1>Assignment 3</h1>
-<h2>Final Project</h2>
+## Group Members
+Student 1: Patrick Gronowski (998431086)
 
-<p>After all the work you've put forward throughout the term, it is time to work towards the final project: a full-stack web application.  Your general requirements:
-</p>
-<ul>
-  <li>Your application must include a server-side component and a database</li>
-  <li>Your application must connect to at least one external public-facing API, ideally the same one you've been working with.</li>
-  <li>Your application should implement session management, allowing a variety of different users to use the application and manage their own data.</li>
-  <li>Your server must implement a RESTful API that extends/improves the behaviour of any API you've chosen to work with by allowing individual users to perform the 4 basic REST operations.</li>
-  <li>Your RESTful API must also implement the following 3 endpoints:
-    <ol>
-      <li>GET /api/messages</li>
-      <li>POST /api/messages</li>
-      <li>DELETE /api/messages/1234</li>
-    </ol>
-  The objective of these endpoints is to allow an external administrator to "push" status messages to all users of the application, making sure each user gets to see any new messages available as quickly as possible if they are logged in.  Messages should be shown in a prominent area of your main view, one at a time, but should not block the rest of the content.  
-  </li>
-  <li>You are responsible for making sure your project is deployed and running throughout the one hour when it will be evaluated.  Details on available timeframes below.</li>
-  <li>Aside from delivering the code for your project you are expected to demo a working version of it on the week when it is due. Regardless, using the main features of your project should be intuitive enough that any user with access to your URL should be able to discover all its features.</li>
-  <li>Include a <code>Solutions.md</code> explaining the features of your web application, the end-user and how s/he might use it.</li>
-  <li>You are expected to work in the same teams as Assignment 2, unless a TA contacted you with a change of teams.</li>
-  <li>The deadline for this assignment is Dec 4, 2017. The last commit before 2:00 PM on that date will be used for marking the assignment. If you plan on submitting the assignment late (refer course information for more details), you should include that in your Solutions.md.</li>
-</ul>
-<p>If you plan on deviating from these guidelines, talk to the prof or a TA and include an Instructions.md explaining your decision.</p>
+Student 2: Michael Wang (1002317931)
 
-<p>The assignment sits here: <a href="https://classroom.github.com/g/NqxhWiJM">https://classroom.github.com/g/NqxhWiJM.</a> </p>
+Student 3: Shoaib Shaikh (1002210840)
 
-<h3>Marking Considerations</h3>
-<ul>
-<li>Your project provides the ability to perform the 4 basic CRUD operations on your chosen collections.  For example, if your project uses a Movie API, you will be evaluated on whether you allow each user to query for movies, add, delete or update their own.  Even if the original API does not support these operations, you are expected to do so from your own server and relying on your own database.</li>
-<li>Your documentation about your own RESTful API is clear and concise, and demonstrates your understanding of proper REST design best practices</li>
-<li>Your project manages "messages" as expected and it is responsive in showing those messages prominently and in real-time as they are posted to the server.</li>
-<li>Your project is up and running at the time when it is evaluated</li>
-<li>Your application allows individual users to manage their own sessions without creating conflicts among themselves</li>
-<li>You will be marked on the functionality of your application, its style and usability, its responsiveness, code quality and structure, and how well the application serves your end-user.</li>
-</ul>
-</main>
+Student 4: Usama Zaki (1002795503)
+
+## POST Request Format for Message API
+When making a post request for messages, please do so in the following format:
+
+curl -H "Content-Type: application/json" -XPOST/DELETE --data '{"data": "your message"}' url-here
+
+The routes to be tested will be:
+
+GET /api/messages
+
+POST /api/messages
+
+DELETE /api/messages/1234
+
+## Custom Cryptocurrency Creation/Edit/Delete API
+
+Requests are done in the same way as above:
+
+curl -H "Content-Type: application/json" -XPOST/PUT/DELETE --data '{"data": "your message"}' url-here
+
+We've implemented a RESTful API that adds functionality to CoinMarketCap (the publically facing API that we are using). We've implemented routes that allow the user to create their own cryptocurrencies. The routes are as follows:
+
+GET /api/coin-data
+- get all of the cryptocurrency information that we store
+
+GET /api/coin-data/:id
+- get the information of one cryptocurrency
+
+POST /api/coin-data
+- create a new cryptocurrency with your own information
+- data = { id: `<immutable id>`, name: `<name>`, symbol: `<3 letter symbol>`, price: `<USD price>`, market_cap: `<USD market cap>`, secret: `<immutable password>` }
+
+PUT /api/coin-data/:id
+- edit the cryptocurrency if you have the password
+- data = { name: `<name>`, symbol: `<3 letter symbol>`, price: `<USD price>`, market_cap: `<USD market cap>`, secret: `<immutable password>` }
+
+DELETE /api/coin-data/:id
+- delete the cryptocurrency if you have the password
+- data = { secret: `<immutable password>` }
+ 
+## Features
+
+CryptoFolio is as a cryptocurrency portfolio manager that the user can use to keep track of all the cryptocurrencies they have invested in. The information of each cryptocurrency is obtained from the CoinMarketCap API. The user can visit the Home page, their Profile, or the Market. They can also send us an e-mail through the Contact Us page.
+
+Once they reach the website, they have the option to register if they do not already have an account, or log in once they do. Once logged in, the user is redirected to the profile page. From the profile page, the user can browse their wallet to see the coins they already own. Directly from the wallet, the user can sell their cryptocurrencies or buy more of them. To the left of the wallet is the wallet's total worth and a distribution of the worth of cryptocurrencies owned (presented in a pie chart). To the right of the wallet is more information about the currency that the user last clicked.
+
+Users can only increment or decrement their cryptocurrency quantities. While this is not realistic, it simplified the front end and allowed us to demonstrate this proof-of-concept. If a user wants to buy a new currency, they can click "BUY COINS" or visit the market directly. Users can search for currencies using the search bar. Here they will be able to add coins to their wallet. 
+
+So the user can increment quantities from their wallet and from the market. They can also decrement quantities, but solely from their wallet. Changes in quantities are accurately represented in the wallet's worth and the pie chart. Both the market and the profile make calls to our API.
+
+If the user is not satisfied with the cryptocurrencies available, they can create/edit/delete their own currencies. This feature is covered in more detail above in the API section. Users cannot delete currencies that they "do not own" (do not have the secret password to).
+
+**Note:** Our application works best in Chrome.
